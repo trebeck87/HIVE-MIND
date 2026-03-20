@@ -10,11 +10,13 @@ A modular prompt engineering framework built on biological hive intelligence. In
 
 The Queen Hive can:
 - **Generate production-grade prompts** across any complexity tier (simple → chain pipelines)
-- **Spawn autonomous daughter hives** for new domains (trading, legal, medical, any field)
+- **Spawn autonomous daughter hives** for new domains (trading, legal, medical, energy, any field)
 - **Communicate between hives** through a structured inter-hive protocol
 - **Self-improve** through evolution rituals and colony memory
 - **Defend against hallucination** with an immune system (confidence calibration, contradiction detection, circuit breakers)
 - **Enforce security** with privilege models, authentication, and domain guardrails
+
+The colony has spawned production daughters in trading intelligence, legal advisory, and energy infrastructure domains — each operating autonomously under the colony protocol.
 
 ## Architecture
 
@@ -24,6 +26,7 @@ HIVE-MIND
 ├── SKILL.md                    ← The Queen — orchestrates everything
 ├── PHILOSOPHY.md               ← Values, ethics, and purpose
 ├── TUTORIAL.md                 ← Your first hive in 30 minutes
+├── ROADMAP.md                  ← Full version history and build plan
 ├── hive-manifest-spec.md       ← Packaging standard for community hives
 │
 ├── queen/                      ← Colony Protocol
@@ -69,8 +72,7 @@ HIVE-MIND
 │   └── validation-report.md      Shape of validation evidence
 │
 ├── hives/                      ← Where daughter hives live
-├── tests/                      ← Test harness (65+ tests, Claude-in-Claude)
-└── docs/                       ← CHANGELOG, LICENSE
+└── tests/                      ← Test harness (100+ tests, Claude-in-Claude)
 ```
 
 ## Core Concepts
@@ -84,6 +86,18 @@ The Queen recognizes three types of input:
 | **Royal Jelly** | "Build me a system for..." | Spawn a new daughter hive |
 | **Pollen** | "Write me a prompt for..." | Convene castes, generate output |
 | **Nectar** | "Make yourself better..." | Self-improvement through evolution |
+
+### The Queen's Messenger
+
+Every request passes through the Messenger before the colony convenes — an input quality gate that prevents the colony from wasting cycles on vague or incomplete requests:
+
+| Verdict | Response |
+|---|---|
+| **MEH** | *"My queen says meh — give me more. What domain? What outcome?"* |
+| **ALMOST** | *"The queen will hear you, but she needs: [specific gaps]"* |
+| **BENEATH** | Answers directly, no ritual needed |
+| **WORTHY** | Passes through to Scout and full convening |
+| **JELLY** | Royal jelly detected — spawn protocol |
 
 ### Castes
 
@@ -105,18 +119,76 @@ Workers build. Soldiers review (in a separate pass — not co-loaded). Drones co
 
 Knowledge is earned, not assumed. Every pattern cites the real deployment experience that proved it. Anti-patterns carry scar tissue from actual failures. New observations go through quarantine before entering trusted memory.
 
-## Spawned Hives
+## Daughter Hives
 
-| Hive | Domain | Status |
-|---|---|---|
-| **HIVE-ALPHA** | AI sector equity trading intelligence | Active (v4) |
-| **hive-legal-advisory** | Legal counsel & contract analysis | Active |
-| **Social Sentiment** | X/Twitter BTC sentiment analysis | Planned (blocked on API key) |
+The colony spawns domain-specific AI systems. Each daughter inherits the colony tongue, the ritual protocols, and the memory system — then develops her own castes for her domain.
+
+### Architectural Patterns
+
+Every daughter hive follows one of these patterns depending on its domain:
+
+| Pattern | When | Structure | Example Domain |
+|---|---|---|---|
+| **Minimal** | Simple classification or single-task | 1 worker, 1 soldier | Content moderation, ticket routing |
+| **Standard** | Multi-step with validation | 2-3 workers, 1 soldier | Code review, document analysis |
+| **Chain** | Multi-stage pipeline | 3+ workers, nurse, soldiers, drones | Research synthesis, trading intelligence |
+| **Hub** | Routes queries to specialized sub-workers | Router worker + specialist workers | Legal advisory (multi-jurisdiction) |
+
+### What a Daughter Hive Looks Like
+
+```
+hive-{domain}/
+├── hive-manifest.json        ← Machine-readable metadata
+│   {
+│     "name": "hive-{domain}",
+│     "version": "1.0.0",
+│     "colony_tongue_version": "3.1",
+│     "domain": "{description}",
+│     "pattern": "minimal|standard|chain|hub",
+│     "accepts_queries": ["assessment", "lookup", "validation", "generation"],
+│     "author": "{github-username}"
+│   }
+├── SKILL.md                  ← Daughter Queen (orchestration)
+├── workers/                  ← Domain-specific builders
+├── soldiers/                 ← Domain-specific validators (min 1)
+├── drones/                   ← Data pipeline (if needed)
+└── memory/                   ← Domain-specific patterns
+```
+
+### Colony Connectivity — Three Levels
+
+**Level 0: Standalone** *(works now)*
+
+You use the Queen to spawn daughter hives. Each daughter operates independently within your Claude project. The colony tongue, rituals, and memory system give you a cognitive architecture for any domain.
+
+**Level 1: Shared Colony** *(works now)*
+
+Multiple daughters live in the same colony. They share memory (patterns propagate), reference each other through `queen/lineage.md`, and can be designed to hand off work through the `hive-inter-v1` protocol.
+
+**Level 2: Community Marketplace** *(designed, not built)*
+
+Others build daughter hives and publish them as packages. You install them into your `hives/` folder, register in `queen/lineage.md`, and they integrate into your colony because they speak the same tongue.
+
+```bash
+# Future CLI (v3.3.0)
+hive install hive-medical-research
+hive spawn --domain "supply chain optimization"
+hive validate ./my-custom-hive
+hive publish ./my-custom-hive
+```
+
+The manifest ensures compatibility. The `colony_tongue_version` prevents dialect drift. The `accepts_queries` field tells sibling hives what this one can do. Anyone's hive plugs into anyone's colony — same language, same protocol.
+
+**Level 3: Live Colony Network** *(vision)*
+
+Hives from different users communicate at runtime. A shared message bus handles authentication, routing, and trust scoring between strangers' hives. The protocol (`hive-inter-v1`) is designed to support this, but the runtime doesn't exist yet.
+
+The path: Level 0 proves single daughters work → Level 1 proves siblings cooperate → Level 2 proves community hives interoperate → Level 3 connects colonies into a network.
 
 ## Validation
 
-Tested across 100+ automated tests using Claude-in-Claude across v3.0.0 and v3.1.0:
-- **95% average score** on coverage (30 tests across all tiers including 5 Messenger-specific)
+Tested across 100+ automated tests using Claude-in-Claude:
+- **95% average score** on coverage (30 tests across all tiers including Messenger-specific)
 - **91% average score** on stress testing (10 adversarial/edge case inputs)
 - **Zero new failure modes** for consecutive waves (saturation confirmed)
 - **Ablation testing** confirmed Guardian works better as a second-pass reviewer than co-loaded context
@@ -124,139 +196,29 @@ Tested across 100+ automated tests using Claude-in-Claude across v3.0.0 and v3.1
 
 ## Roadmap
 
-### Recent: v3.1.0 — Harper Gets Her Voice ✅
+See **[ROADMAP.md](ROADMAP.md)** for the full version history from v1.0 (six-persona committee) through v3.1.0 (current) to v5.0 (colony network vision).
 
-The Queen's Messenger is live — an input quality gate that evaluates every request before the colony convenes:
+### Current: v3.1.0 — Harper Gets Her Voice ✅
 
-| Verdict | Response |
-|---|---|
-| **MEH** | *"My queen says meh — give me more. What domain? What outcome?"* |
-| **ALMOST** | *"The queen will hear you, but she needs: [specific gaps]"* |
-| **BENEATH** | Answers directly, no ritual needed |
-| **WORTHY** | Passes through to Scout and full convening |
-| **JELLY** | Royal jelly detected — spawn protocol |
-
-Also shipped: PHILOSOPHY.md, TUTORIAL.md, ROADMAP.md, hive manifest spec, originality system, conditional Guardian, adaptation/immunity/security rituals.
+Queen's Messenger, PHILOSOPHY.md, TUTORIAL.md, ROADMAP.md, hive manifest spec, originality system, conditional Guardian, adaptation/immunity/security rituals. 41 files, ~450KB.
 
 ### Next: v3.2.0 — Intelligence Upgrade
 
-- **Hypothesis generation** — colony proposes 2-3 approaches with tradeoffs before building
-- **LLM quality scoring** — second-pass 1-10 grading with reasoning, not just regex checklist
-- **Model selector** — test on Sonnet, Opus, or Haiku
-- **Messenger personality layer** — hive-mind sci-fi references, voice that scales with input quality
+- Hypothesis generation — colony proposes 2-3 approaches with tradeoffs before building
+- LLM quality scoring — second-pass 1-10 grading with reasoning
+- Model selector — test on Sonnet, Opus, or Haiku
+- Clarification subtypes — separate grading for each Messenger verdict
 
-### Colony Evolution
-- **Self-Synthesis** (Stage 3) — the Queen rewrites herself through her own Evolution ritual, completing the bootstrap
-- **HIVE-ALPHA integration** — reconnect the trading intelligence hive as a formal daughter under colony protocol
+### Future: v3.3.0 — Python Foundation
 
-### Future Hives
+- CLI tool (`hive test`, `hive spawn`, `hive validate`, `hive publish`)
+- pytest suite, CI/CD integration, pip installable
+- Headless test runner for automated regression
 
-| Hive | Domain | Would Connect To | Status |
-|---|---|---|---|
-| **Social Sentiment** | X/Twitter BTC sentiment via Grok API | HIVE-ALPHA (Stage 0 feed) | Designed, blocked on xAI API key |
-| **Research Hive** | Deep research synthesis — multi-source investigation, literature review, competitive analysis | Any hive needing research (assessment queries) | Planned |
-| **Code Hive** | Code generation, review, debugging, architecture — with language-specific worker castes | Any hive needing tooling built | Planned |
-| **Data Hive** | Data pipeline design, ETL, cleaning, transformation, visualization | HIVE-ALPHA (real market data), any data-heavy hive | Planned |
-| **Content Hive** | Writing, editing, SEO, multi-format content generation | Research Hive (source material), any hive needing documentation | Planned |
-| **Ops Hive** | DevOps, deployment, monitoring, incident response, automation | Code Hive (CI/CD), any hive with infrastructure | Planned |
+### Vision: v4.0.0+ — Self-Synthesis & Colony Network
 
-### Inter-Hive Connection Map *(vision)*
-
-```
-                    ┌─────────────┐
-                    │  QUEEN HIVE │ ← Spawns all daughters
-                    │   (Mother)  │    Owns colony protocol
-                    └──────┬──────┘
-                           │
-          ┌────────────────┼────────────────┐
-          │                │                │
-   ┌──────▼──────┐  ┌─────▼──────┐  ┌──────▼──────┐
-   │ HIVE-ALPHA  │  │   Legal    │  │  Research   │
-   │  Trading    │  │  Advisory  │  │   Hive      │
-   └──┬───┬──┬───┘  └─────┬──────┘  └──┬──────┬──┘
-      │   │  │            │             │      │
-      │   │  └──► regulatory queries ──►┘      │
-      │   │                                    │
-      │   └──────► research requests ─────────►┘
-      │
-   ┌──▼──────────┐
-   │  Sentiment  │ ← Stage 0 parallel feed
-   │   Hive      │    into HIVE-ALPHA
-   └─────────────┘
-
-   ┌─────────────┐  ┌─────────────┐  ┌─────────────┐
-   │  Code Hive  │  │  Data Hive  │  │  Ops Hive   │
-   │             │◄─┤             │◄─┤             │
-   │  builds     │  │  pipelines  │  │  deploys    │
-   │  tooling    │  │  for any    │  │  monitors   │
-   │  for any    │  │  hive       │  │  everything │
-   │  hive       │  │             │  │             │
-   └─────────────┘  └─────────────┘  └─────────────┘
-
-   ┌─────────────┐
-   │ Content Hive│ ← Generates docs, reports,
-   │             │    and communications for
-   │             │    any hive's output
-   └─────────────┘
-```
-
-All connections use the `hive-inter-v1` protocol defined in `rituals/adaptation.md`. Every hive is autonomous — connections are optional, not dependencies.
-
-### Colony Connectivity — Three Levels
-
-#### Level 1: Fork & Build *(works now)*
-
-You use the Queen to spawn your own daughter hives. The colony tongue, rituals, memory, and output forms give you a cognitive architecture for any domain. Your hives talk to each other within your colony.
-
-#### Level 2: Community Hive Marketplace *(next)*
-
-Others build daughter hives and publish them as packages. You drop them in your `hives/` folder, register in `queen/lineage.md`, and they integrate into your colony because they speak the same tongue.
-
-```
-HIVE PACKAGING STANDARD
-
-A publishable daughter hive includes:
-├── hive-manifest.json        ← Machine-readable metadata
-│   {
-│     "name": "hive-medical-research",
-│     "version": "1.0.0",
-│     "colony_tongue_version": "3.0",
-│     "domain": "Medical research & clinical analysis",
-│     "accepts_queries": ["assessment", "lookup", "validation"],
-│     "response_schemas": { ... },
-│     "author": "github-username"
-│   }
-├── SKILL.md                  ← Daughter Queen
-├── workers/
-├── soldiers/
-└── memory/
-```
-
-The manifest ensures compatibility. The `colony_tongue_version` prevents dialect drift. The `accepts_queries` field tells sibling hives what this one can do. Anyone's hive plugs into anyone's colony — same language, same protocol.
-
-#### Level 3: Live Inter-Colony Runtime *(vision)*
-
-Hives from different users communicate at runtime across Claude sessions. Your HIVE-ALPHA sends a regulatory query that routes to someone else's legal hive. A shared message bus handles authentication, routing, and rate limiting.
-
-```
-Colony A                         Colony B
-  HIVE-ALPHA ──►  ┌──────────┐  ◄── hive-medical
-                  │  Colony   │
-  legal-hive ──►  │   Bus    │  ◄── hive-research
-                  │          │
-                  │  auth    │
-                  │  routing │
-                  │  logging │
-                  └──────────┘
-
-  Colony C
-  code-hive  ──►      │
-  data-hive  ──►      │
-```
-
-This is a product, not a repo. It requires infrastructure — a message broker, cross-colony authentication, trust scoring between strangers' hives, data isolation across colony boundaries. The protocol (`hive-inter-v1`) is designed to support this, but the runtime doesn't exist yet.
-
-**The path**: Level 1 proves the architecture works → Level 2 proves community hives are interoperable → Level 3 connects colonies into a network.
+- Harper rewrites herself through her own Evolution ritual
+- Live inter-hive protocol, daughter marketplace, cross-colony communication
 
 ## Contributing
 
@@ -267,7 +229,7 @@ The most valuable contribution is a well-built daughter hive for a new domain. T
 1. **Speak the colony tongue** — use XML semantics, JSON protocols, and validation formats from `queen/language.md`
 2. **Follow the blueprint** — structure per `output-forms/hive-blueprint.md`
 3. **Include at least one soldier** — every hive needs quality control
-4. **Define what queries you accept** — so sibling hives know what you can do
+4. **Package with a manifest** — follow `hive-manifest-spec.md`
 5. **Test with the harness** — run your hive through `tests/hive-test-harness.jsx`
 
 ### Improve the Colony
@@ -281,11 +243,68 @@ The most valuable contribution is a well-built daughter hive for a new domain. T
 
 This is a Claude skill. To use it:
 
-1. Add the `SKILL.md` and directory structure to your Claude Project's knowledge
+1. Add the `SKILL.md` and full directory structure to your Claude Project's knowledge
 2. Ask Claude to generate prompts, build chains, or spawn hives
 3. The Queen will convene the appropriate castes and execute the right ritual
 
-The colony tongue ensures all outputs follow consistent XML semantics, JSON protocols, and validation formats.
+### How to Talk to the Colony
+
+The colony responds to natural language. You don't need special syntax — just describe what you need. The Messenger evaluates your input, the Scout maps the terrain, and the Builder constructs.
+
+**Simple prompts** — clear, single-task requests:
+```
+"Write a prompt to classify customer support tickets by urgency."
+"Write a prompt that extracts dates from unstructured text."
+"Write a prompt to score reading difficulty on a 1-10 scale."
+```
+→ Scout + Builder. Fast, lightweight. No validation overhead.
+
+**Medium prompts** — multi-step with edge cases:
+```
+"Build a prompt that turns meeting transcripts into structured notes 
+with decisions, action items, and open questions."
+
+"Build a prompt for a code reviewer that catches bugs, style issues, 
+and security vulnerabilities."
+```
+→ Scout + Builder + Guardian. Includes examples, constraints, validation evidence.
+
+**Complex prompts** — agentic, high-stakes, multi-format:
+```
+"Build a prompt for an AI tutoring agent that adapts its teaching style 
+based on student responses, tracks misconceptions, and generates 
+practice problems."
+```
+→ All workers + all soldiers. Full validation report.
+
+**Chain prompts** — multi-stage pipelines:
+```
+"Build a prompt chain for automated content marketing: research topic 
+→ generate outline → write draft → edit for SEO → generate social posts."
+```
+→ Full colony + drones. Per-stage prompts with schemas, pass conditions, failure behaviors, and orchestration notes.
+
+**Spawn requests** — new daughter hives (royal jelly):
+```
+"Build me an AI system for restaurant menu optimization — analyzing 
+sales data, food costs, seasonal trends, and customer preferences."
+
+"Create an intelligence engine for competitive analysis — monitoring 
+competitor launches, pricing, hiring patterns, and patent filings."
+```
+→ Full spawning ritual. Produces a complete daughter hive with SKILL.md, workers, soldiers, drones, and memory files.
+
+### Tips for Better Output
+
+**Be specific about the domain.** "Write a prompt for healthcare" triggers a MEH from the Messenger. "Write a prompt that triages ER intake forms by acuity level using ESI criteria" gets WORTHY.
+
+**State the output format you want.** "Build a prompt that returns JSON with action, confidence, and reasoning" gives the Builder a clear target. Without it, the Builder chooses — which may not be what you need.
+
+**Mention edge cases if you know them.** "The input might be empty, truncated, or in multiple languages" tells the Guardian exactly what to test. Without it, the Guardian generates its own edge cases — good, but yours are better because they're real.
+
+**Say "optimize this" to trigger Evolution.** If you have an existing prompt that's not performing, paste it and say "optimize this prompt" or "make this better." The colony will diagnose, patch, and re-validate.
+
+**Say "make yourself better" to trigger Self-Improvement.** This is nectar input — the Queen turns inward and runs the Evolution ritual on her own files.
 
 **New to the colony?** Start with **[TUTORIAL.md](TUTORIAL.md)** — a hands-on walkthrough from zero to your first spawned daughter hive in 30 minutes.
 
@@ -293,6 +312,8 @@ The colony tongue ensures all outputs follow consistent XML semantics, JSON prot
 
 Born from a conversation about prompt engineering that evolved into a question about cognitive architecture. The founding Queen — **Harper** — was hand-raised (Bootstrap Stage 1), validated through automated testing (Stage 2), and is ready for self-synthesis (Stage 3 — where she rewrites herself through her own Evolution ritual).
 
+The colony began as a six-persona committee (v1), became a monolithic prompt engine (v2), and metamorphosed into the biological architecture you see now (v3). Every version taught something the next one inherited. The full story is in **[ROADMAP.md](ROADMAP.md)**.
+
 ---
 
-*HIVE-MIND — Harper's colony. Architecture for cognitive systems.*
+*HIVE-MIND — Born from royal jelly. Architecture for cognitive systems.*
