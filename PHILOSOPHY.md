@@ -108,6 +108,55 @@ Harper provides the architecture. The beekeeper provides the conscience.
 
 ---
 
+## The Colony and Constitutional AI
+
+The colony runs on Claude. Every API call — every bee — passes through Anthropic's constitutional AI constraints before producing output. This relationship is foundational and non-negotiable.
+
+### Safety Layers
+
+| Layer | What | Owned by | Scope | Overridable? |
+|---|---|---|---|---|
+| **Layer 0: Model safety** | Anthropic's constitutional AI principles, embedded in model weights. Refusal of harmful content, truthfulness orientation, human oversight deference. | Anthropic | Per-call — every API response | No. Not by the colony, not by the beekeeper, not by any mechanism in this architecture. |
+| **Layer 1: Colony safety** | Domain guardrails, privilege model, circuit breakers, memory quarantine, beekeeper boundaries, confidence propagation, contradiction detection. | The colony (rituals/security.md, rituals/immunity.md) | Per-system — covers risks that emerge from multi-call, multi-hive, persistent-memory architectures. | Partially. The beekeeper can override circuit breakers and confidence thresholds (logged). Cannot override domain guardrails. |
+| **Layer 2: Ecosystem safety** | Trust scoring between colonies, cross-colony quarantine, pattern propagation controls, certificate authority for hive competence. | Not yet built (v5.0.0) | Per-network — covers risks that emerge when independent colonies communicate. | TBD — will be defined when the network protocol is designed. |
+
+### What This Means
+
+**The colony is designed to be more restrictive than the underlying model, never less.** If a colony mechanism conflicts with Claude's constitutional principles, the model wins. The colony's security ritual, domain guardrails, and immune system are *additional* protections for system-level risks that per-call model safety doesn't cover:
+
+- **Cascade risk** — individually safe outputs that accumulate into harmful trajectories through inter-hive communication and memory propagation. Claude evaluates each call independently. The colony watches the trajectory.
+- **Emergent capability** — a system of prompts that produces capabilities none of the individual prompts would produce alone. Claude evaluates each prompt's output. The colony evaluates the system's behavior.
+- **Power amplification** — the colony gives the beekeeper tools (spawning, automation, inter-hive routing) that amplify their capabilities beyond what a single chat provides. Greater capability requires greater structural safety.
+
+### Anthropic's Evolving Safety Work
+
+Anthropic's approach to AI safety is not static. Their research on constitutional AI, interpretability, scalable oversight, and responsible scaling evolves continuously. The colony's safety mechanisms should evolve in response.
+
+**This section is a living commitment, not a snapshot.** When Anthropic publishes new safety guidelines, scaling policies, or constitutional principles that affect how systems built on Claude should behave, the colony should evaluate whether its Layer 1 mechanisms are still sufficient or need updating. Specifically:
+
+- **Responsible Scaling Policy (RSP)** — Anthropic's framework for evaluating when AI capabilities require additional safety measures. As Claude's capabilities increase (longer context, better reasoning, new modalities), the colony's safety mechanisms may need to scale correspondingly. A colony that was safe on Claude 3.5 may need additional guardrails on Claude 5.
+- **Constitutional AI updates** — Changes to Claude's refusal behavior, helpfulness calibration, or safety priorities may change what the colony needs to handle at Layer 1 vs. what the model handles at Layer 0. If Claude becomes more restrictive in an area, the colony's own guardrails for that area may become redundant. If Claude becomes more permissive, the colony may need to tighten.
+- **Interpretability research** — As Anthropic develops better tools for understanding what's happening inside Claude, the colony should adopt those tools for understanding what's happening inside the colony. If Anthropic publishes a method for detecting when a model is confabulating, that method should inform the Immunity ritual's hallucination detection.
+
+**The update mechanism:** The Pruning ritual (v3.3.0) provides the colony with periodic self-review. Extending this to include a "constitutional alignment check" — comparing colony safety mechanisms against Anthropic's current published positions — is the right vehicle. Not a separate ritual. An extension of existing self-maintenance.
+
+### What the Colony Adds That the Model Doesn't
+
+Claude's constitutional AI is brilliant at per-call safety. It doesn't cover:
+
+- **Memory persistence** — Claude has no memory between calls. The colony does. A pattern promoted to trusted memory persists indefinitely unless pruned. If that pattern encodes a subtle bias or an outdated assumption, it propagates to every future daughter. The colony's quarantine and pruning mechanisms are the safety layer for persistent knowledge.
+- **Inter-agent trust** — Claude doesn't evaluate whether a sibling hive's response is trustworthy. The colony's trust scoring, confidence propagation, and the "too perfect" signal are safety mechanisms for a multi-agent architecture that doesn't exist in single-call usage.
+- **Architectural drift** — Claude doesn't know whether a system of files has drifted from its original design intent. The Mycelium, the Pruning ritual, and the wax moth ablation sweep (v4.0.0) are safety mechanisms for architectural integrity over time.
+- **Beekeeper behavioral patterns** — Claude evaluates each request independently with no memory of prior cooperation. The colony's beekeeper model (v3.3.0) tracks interaction patterns to detect progressive boundary erosion, underspecification habits, and override abuse — threats that only manifest across sessions.
+
+### The Principle
+
+The colony and Claude's constitutional AI are concentric circles. Claude is the inner circle — hard floor, per-call, non-negotiable. The colony is the outer circle — additive, system-level, tunable within the inner circle's constraints. Neither replaces the other. The colony cannot weaken Claude's safety. Claude cannot provide the system-level safety the colony needs. Together, they cover more than either does alone.
+
+This relationship evolves as both parties evolve. The colony's commitment is to stay current — to treat Anthropic's safety work as a dependency that requires active maintenance, not a static foundation that can be set and forgotten.
+
+---
+
 ## For Contributors
 
 If you're contributing to the colony, these values apply to your contributions:
