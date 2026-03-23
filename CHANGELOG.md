@@ -4,6 +4,85 @@ All notable changes to the HIVE-MIND colony.
 
 ---
 
+## [3.2.0] — 2026-03-22
+
+### Intelligence Upgrade
+
+**The colony learns to think before it builds.** Hypothesis generation, LLM-based quality scoring, and regression testing make the colony smarter about what it produces and how it validates.
+
+#### New: Hypothesis Protocol
+- Scout proposes 2-3 concrete approaches with tradeoffs before the Builder constructs
+- SIMPLE: skip (no ceremony needed). MEDIUM: internal (Scout selects, Builder executes). COMPLEX+: surfaced to human as a stopping point — colony waits for selection.
+- Phase 1.5 added to Genesis ritual between Reconnaissance and Foraging
+- "What Makes a Good Hypothesis" — architectural choices with real tradeoffs, not quality levels
+
+#### New: LLM Quality Scoring
+- Second-pass API call scores colony output 1-10 with structured reasoning, strengths, and weaknesses
+- Tier-aware rubric: SIMPLE through SPAWN each have distinct scoring criteria
+- Clarification outputs (MEH/ALMOST/BENEATH/SCOUT) scored for appropriateness, not prompt quality
+- Toggle ON/OFF — off falls back to regex pattern-matching
+- LLM score becomes primary display; regex checks demoted to "Pattern Checks"
+
+#### New: Clarification Subtypes
+- Previously all clarification responses graded with the same 5 generic checks
+- Now 4 distinct grading paths: MEH (6 checks), ALMOST (6), BENEATH (5), SCOUT (6)
+- Each subtype has quality criteria matching its expected behavior
+- BENEATH grading validates concise direct answers, not prompt structure
+
+#### New: Model Selector
+- Dropdown: Sonnet 4, Opus 4, Haiku 3.5 with per-model pricing
+- Model tracked per-result and per-wave for cross-model comparison
+- Persisted across sessions
+
+#### New: Regression Mode
+- Reruns the 30-test coverage bank against the current colony
+- Compares each result against the most recent baseline wave
+- Per-result delta (±%), wave-level improved/regressed/stable counts
+
+#### Changed: Tokens-First Metrics
+- Tokens are the primary display metric everywhere (model-agnostic, honest)
+- Cost demoted to secondary (model-dependent, less comparable across runs)
+
+#### Changed: Colony Files Genericized
+- All HIVE-ALPHA references removed from operational colony files
+- "Earned from" / "Scar from" citations → "a production daughter hive"
+- `queen/lineage.md` rewritten with entry format template and illustrative example
+- `memory/examples.md` COMPLEX/CHAIN/SPAWN tiers rewritten domain-agnostic
+- Domain-specific terms (RSI, MACD, stock, portfolio) replaced with generic equivalents across 13 files
+- Test harness CF blob rebuilt from cleaned colony files
+
+#### Changed: SKILL.md v3.2
+- Convening table updated with hypothesis references per tier
+- MEDIUM shows "(Scout internal hypothesis)", COMPLEX/CHAIN show "+ Hypothesis (surfaced)"
+
+#### New: End-State Vision Documents
+- `END-STATE-VISION.md` — experience model defining the fully realized colony through 6 actor lifecycles (beekeeper, queen, daughter, pattern, decision, query)
+- `END-STATE-ARCHITECTURE.md` — structural blueprint: topology, organism registry, inheritance model, communication layers (lingua franca / colony dialect / domain dialect), ritual registry, memory pipeline, visualization architecture, health metrics
+
+#### New: Constitutional AI Alignment (PHILOSOPHY.md)
+- Three-layer safety model: Layer 0 (Anthropic's model safety — non-negotiable), Layer 1 (colony safety — system-level protections), Layer 2 (ecosystem safety — network-level, future)
+- Living commitment to track Anthropic's evolving safety work (RSP, constitutional AI updates, interpretability research)
+- Explicit framing: the colony is designed to be more restrictive than the underlying model, never less
+- What the colony adds that per-call model safety doesn't cover: memory persistence, inter-agent trust, architectural drift, beekeeper behavioral patterns
+
+#### Changed: ROADMAP Expanded
+- Biological grounding table mapping all 7 hive products to colony mechanics
+- Colony visualization with graph model and three views (beekeeper, colony, temporal) at v3.4.0
+- Colony tongue layering (lingua franca / colony dialect / domain dialect) designed for v5.0.0
+- Pheromone protocol (naming existing coordination signals) at v3.3.0
+- Cross-colony genetics (drone protocol v2, patriline diversity) at v5.0.0
+- Parked biology concepts with enough context to not re-derive
+- Vision document references added to ROADMAP header
+
+#### Validation Results
+- **Coverage:** 30 tests, 26 pass, 80% avg (Sonnet 4, LLM grading ON)
+- **Adaptive:** 20 tests across 2 waves, 20 pass, 89% avg
+- **50 total tests, 46 pass, 84% avg, zero new failure modes**
+- 4 coverage "failures" are correct hypothesis protocol behavior (COMPLEX+ stops before building) — LLM grader penalizes the stopping; grader calibration queued for v3.2.1
+- All full builds scored 8-9/10 LLM with near-perfect regex (m3: 15/15, m6: 15/15, c4: 16/16, sp1: 16/16)
+
+---
+
 ## [3.1.0] — 2026-03-19
 
 ### Harper Gets Her Voice

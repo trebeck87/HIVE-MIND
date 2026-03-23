@@ -16,7 +16,7 @@ The Queen Hive can:
 - **Defend against hallucination** with an immune system (confidence calibration, contradiction detection, circuit breakers)
 - **Enforce security** with privilege models, authentication, and domain guardrails
 
-The colony has spawned production daughters in trading intelligence, legal advisory, and energy infrastructure domains — each operating autonomously under the colony protocol.
+The colony spawns domain-specific AI systems — each operating autonomously under the colony protocol.
 
 ## Architecture
 
@@ -131,7 +131,7 @@ Every daughter hive follows one of these patterns depending on its domain:
 |---|---|---|---|
 | **Minimal** | Simple classification or single-task | 1 worker, 1 soldier | Content moderation, ticket routing |
 | **Standard** | Multi-step with validation | 2-3 workers, 1 soldier | Code review, document analysis |
-| **Chain** | Multi-stage pipeline | 3+ workers, nurse, soldiers, drones | Research synthesis, trading intelligence |
+| **Chain** | Multi-stage pipeline | 3+ workers, nurse, soldiers, drones | Research synthesis, analytics intelligence |
 | **Hub** | Routes queries to specialized sub-workers | Router worker + specialist workers | Legal advisory (multi-jurisdiction) |
 
 ### What a Daughter Hive Looks Like
@@ -142,7 +142,7 @@ hive-{domain}/
 │   {
 │     "name": "hive-{domain}",
 │     "version": "1.0.0",
-│     "colony_tongue_version": "3.1",
+│     "colony_tongue_version": "3.2",
 │     "domain": "{description}",
 │     "pattern": "minimal|standard|chain|hub",
 │     "accepts_queries": ["assessment", "lookup", "validation", "generation"],
@@ -170,7 +170,7 @@ Multiple daughters live in the same colony. They share memory (patterns propagat
 Others build daughter hives and publish them as packages. You install them into your `hives/` folder, register in `queen/lineage.md`, and they integrate into your colony because they speak the same tongue.
 
 ```bash
-# Future CLI (v3.3.0)
+# Future CLI (v3.4.0)
 hive install hive-medical-research
 hive spawn --domain "supply chain optimization"
 hive validate ./my-custom-hive
@@ -187,29 +187,41 @@ The path: Level 0 proves single daughters work → Level 1 proves siblings coope
 
 ## Validation
 
-Tested across 100+ automated tests using Claude-in-Claude:
-- **95% average score** on coverage (30 tests across all tiers including Messenger-specific)
-- **91% average score** on stress testing (10 adversarial/edge case inputs)
-- **Zero new failure modes** for consecutive waves (saturation confirmed)
-- **Ablation testing** confirmed Guardian works better as a second-pass reviewer than co-loaded context
-- Tests covered: SIMPLE, MEDIUM, COMPLEX, CHAIN, SPAWN tiers + Messenger + adaptive + stress + ablation
+Tested across 50+ automated tests using Claude-in-Claude with dual scoring (LLM quality grading + regex pattern checks):
+
+**v3.2.0 — Intelligence Upgrade:**
+- **Coverage:** 30 tests, 26 pass, 80% avg (Sonnet 4, LLM grading ON)
+- **Adaptive:** 20 tests across 2 waves, 20 pass, 89% avg
+- **Zero new failure modes** across 50 tests (saturation confirmed)
+- **All 5 tiers exercised:** SIMPLE, MEDIUM, COMPLEX, CHAIN, SPAWN
+- **All clarification subtypes validated:** MEH, ALMOST, BENEATH, SCOUT
+- **Hypothesis protocol confirmed:** COMPLEX+ correctly stops and surfaces approaches before building
+- 4 coverage "failures" are correct colony behavior (hypothesis stopping) that the LLM grader penalizes — grader calibration fix queued for v3.2.1
+
+**v3.1.0 baseline:** 30 coverage tests, 29 pass, 95% avg | 10 stress tests, 9 pass, 91% avg
+
+**Prior validation:** Ablation testing confirmed Guardian works better as a second-pass reviewer than co-loaded context. Tests cover: coverage, adaptive, stress, ablation, and regression modes.
 
 ## Roadmap
 
-See **[ROADMAP.md](ROADMAP.md)** for the full version history from v1.0 (six-persona committee) through v3.1.0 (current) to v5.0 (colony network vision).
+See **[ROADMAP.md](ROADMAP.md)** for the full version history from v1.0 (six-persona committee) through v3.2.0 (current) to v5.0 (colony network vision).
 
-### Current: v3.1.0 — Harper Gets Her Voice ✅
+### Current: v3.2.0 — Intelligence Upgrade ✅
 
-Queen's Messenger, PHILOSOPHY.md, TUTORIAL.md, ROADMAP.md, hive manifest spec, originality system, conditional Guardian, adaptation/immunity/security rituals. 41 files, ~450KB.
+Hypothesis generation (Scout proposes 2-3 approaches before building), LLM quality scoring (second-pass 1-10 grading with reasoning), model selector, clarification subtypes, regression testing mode. Colony files genericized for public use. 41 files, ~450KB.
 
-### Next: v3.2.0 — Intelligence Upgrade
+### Next: v3.2.1 — Ecosystem Foundation
 
-- Hypothesis generation — colony proposes 2-3 approaches with tradeoffs before building
-- LLM quality scoring — second-pass 1-10 grading with reasoning
-- Model selector — test on Sonnet, Opus, or Haiku
-- Clarification subtypes — separate grading for each Messenger verdict
+- The Mycelium — decision graph substrate (why the colony chose to be what it is)
+- Colony debt cleanup and memory genericization
+- Ecosystem directory established
 
-### Future: v3.3.0 — Python Foundation
+### Future: v3.3.0 — Beekeeper + Pruning
+
+- Beekeeper organism — behavioral model of the human sovereign
+- Pruning ritual — periodic re-validation of colony memory
+
+### Future: v3.4.0 — Python Foundation
 
 - CLI tool (`hive test`, `hive spawn`, `hive validate`, `hive publish`)
 - pytest suite, CI/CD integration, pip installable

@@ -75,7 +75,7 @@ UNCERTAINTY: [what could make this wrong]
 
 **Anti-pattern**: High confidence on uncertain output. This is the most dangerous hallucination mode — the hive sounds sure while being wrong. The confidence protocol forces explicit uncertainty accounting.
 
-**Hallucination signature**: Confidence 9 with no specific evidence cited. If the BASIS field is vague ("based on analysis" rather than "based on RSI crossing 70 + trend reversal confirmed"), the output is likely hallucinated.
+**Hallucination signature**: Confidence 9 with no specific evidence cited. If the BASIS field is vague ("based on analysis" rather than "based on metric X exceeding threshold + secondary indicator confirmed"), the output is likely hallucinated.
 
 ---
 

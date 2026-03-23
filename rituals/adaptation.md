@@ -7,7 +7,7 @@
 ## When to Invoke
 
 - A worker produces low-confidence output ("I'm not qualified for this")
-- A domain boundary is crossed ("This is a legal question, not a trading question")
+- A domain boundary is crossed ("This is a legal question, not an analytics question")
 - A caste is needed that doesn't exist ("I need data normalization but have no Processor")
 - Output quality degrades in a specific area repeatedly
 - The Scout identifies a sub-domain the hive has no memory for
@@ -107,24 +107,24 @@ The hive's Queen (SKILL.md) generates a new caste file:
 ### Example
 
 ```
-HIVE-ALPHA encounters: "What are the tax implications of this trade?"
+An analytics hive encounters: "What are the regulatory implications of this decision?"
 
-Scout assessment: This is a tax/legal question. Outside trading domain.
-Absorb attempt: Builder produces generic "consult a tax advisor" response.
+Scout assessment: This is a regulatory/legal question. Outside analytics domain.
+Absorb attempt: Builder produces generic "consult a regulatory advisor" response.
 Quality: <70% — not useful.
 
-Reinforce check: Is tax analysis within trading domain?
-  → Partially. Tax-loss harvesting IS trading-adjacent.
-  → But full tax advisory is NOT.
+Reinforce check: Is regulatory analysis within analytics domain?
+  → Partially. Compliance flagging IS analytics-adjacent.
+  → But full regulatory advisory is NOT.
 
-Decision: REINFORCE for tax-loss harvesting signals (within domain).
-           CALL SIBLING for full tax questions (legal hive).
+Decision: REINFORCE for compliance flagging (within domain).
+           CALL SIBLING for full regulatory questions (legal hive).
 
 Reinforcement spawned:
-  workers/tax-harvester.md
-  Role: Identify tax-loss harvesting opportunities in held positions
-  Input: Holdings with cost basis + current prices + wash sale window
-  Output: { candidates: [...], estimated_savings: ..., wash_sale_risk: ... }
+  workers/compliance-flagger.md
+  Role: Identify compliance flags in pending decisions
+  Input: Pending decisions + applicable regulations + exception history
+  Output: { flags: [...], risk_level: ..., recommended_action: ... }
 ```
 
 ---
@@ -139,20 +139,20 @@ When a hive needs capability from a sibling, they communicate through a shared m
 {
   "protocol": "hive-inter-v1",
   "from": {
-    "hive": "HIVE-ALPHA",
-    "caste": "workers/stock-analyst",
-    "context": "Analyzing position SMCI — encountered regulatory flag"
+    "hive": "hive-analytics",
+    "caste": "workers/analyst",
+    "context": "Analyzing position — encountered regulatory flag"
   },
   "to": {
-    "hive": "hive-legal-advisory",
-    "reason": "Need legal risk assessment on SEC investigation impact"
+    "hive": "hive-legal",
+    "reason": "Need legal risk assessment on regulatory investigation impact"
   },
   "query": {
     "type": "assessment",
     "urgency": "blocking | advisory | background",
     "input": {
-      "description": "Super Micro Computer facing SEC accounting investigation",
-      "specific_question": "What is the litigation risk and potential impact on stock price?",
+      "description": "Company facing regulatory accounting investigation",
+      "specific_question": "What is the litigation risk and potential impact?",
       "context_data": { }
     },
     "response_schema": {
@@ -172,21 +172,21 @@ When a hive needs capability from a sibling, they communicate through a shared m
 {
   "protocol": "hive-inter-v1",
   "from": {
-    "hive": "hive-legal-advisory",
+    "hive": "hive-legal",
     "caste": "workers/analyst"
   },
   "to": {
-    "hive": "HIVE-ALPHA"
+    "hive": "hive-analytics"
   },
   "response": {
     "status": "complete | partial | declined",
     "risk_level": "high",
-    "assessment": "Active SEC investigation creates material uncertainty...",
+    "assessment": "Active regulatory investigation creates material uncertainty...",
     "confidence": 6,
-    "recommendation": "Reduce position to 50% of current size. Set stop-loss at -20%.",
+    "recommendation": "Reduce exposure by 50%. Set stop-loss at -20%.",
     "caveats": [
       "Assessment based on public information only",
-      "Not legal advice — consult securities attorney for specific guidance"
+      "Not legal advice — consult attorney for specific guidance"
     ]
   }
 }
@@ -237,21 +237,21 @@ When no sibling exists and the gap requires a new domain specialist:
 {
   "protocol": "hive-spawn-request-v1",
   "from": {
-    "hive": "HIVE-ALPHA",
+    "hive": "hive-analytics",
     "reason": "Recurring need for social sentiment analysis with no sibling hive"
   },
-  "requested_domain": "Social media sentiment analysis for trading signals",
+  "requested_domain": "Specialized domain analysis for enhanced signal detection",
   "evidence": [
-    "5 queries in past month required sentiment data",
-    "Builder produced <50% quality output on sentiment tasks",
-    "LunarCrush and Grok integration designed but no hive to operate them"
+    "5 queries in past month required specialized domain data",
+    "Builder produced <50% quality output on specialized domain tasks",
+    "External API integrations designed but no hive to operate them"
   ],
   "suggested_castes": [
-    "workers/x-sentiment-analyst — Grok API integration for X/Twitter",
-    "workers/aggregator — LunarCrush/Santiment data normalization",
-    "drones/sentiment-collector — raw social data gathering"
+    "workers/sentiment-analyst — social platform API integration",
+    "workers/aggregator — multi-source sentiment normalization",
+    "drones/domain-collector — raw external data gathering"
   ],
-  "integration_point": "HIVE-ALPHA Stage 0 parallel feed"
+  "integration_point": "Querying hive's data pipeline (Stage 0 parallel feed)"
 }
 ```
 

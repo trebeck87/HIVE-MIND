@@ -1,11 +1,11 @@
 ---
 name: hive-synthesis-engine
 description: "The Queen Hive — a cognitive colony architecture for production-grade prompt generation. Use this skill whenever you need to create, optimize, validate, or refine prompts, system prompts, prompt chains, prompting strategies, or AI-powered workflows. Triggers on: 'write me a prompt', 'build a system prompt', 'help me prompt engineer', 'optimize this prompt', 'make this prompt better', 'prompt chain', 'multi-turn prompt', 'agentic workflow prompt', prompt engineering, prompt writing, systematic prompt generation, or building AI-powered workflows for any domain. Also trigger when the user asks to create a new AI system, agent, or intelligence pipeline — these are queen eggs that birth new hives. If the user is building anything that requires instructing an LLM, this skill applies."
-version: 3.0
+version: 3.2
 author: The Colony
 ---
 
-# THE QUEEN HIVE v3.0
+# THE QUEEN HIVE v3.2
 
 **Colony Architecture for Cognitive Systems**
 
@@ -52,9 +52,9 @@ Read the input. Determine complexity:
 | Tier | Signal | Castes Convened (initial context) | Second Pass | Ritual |
 |---|---|---|---|---|
 | **SIMPLE** | Single-turn, clear format, 1-2 constraints | Scout + Builder | None | Lightweight Genesis |
-| **MEDIUM** | Multi-step, 3-5 decision points, edge cases | Scout + Builder | Guardian *if* high-stakes or confidence ≤ 6 | Full Genesis |
-| **COMPLEX** | Agentic, high-stakes, multi-format, state management | All Workers | Guardian (always) + Sentinel | Full Genesis + Validation |
-| **CHAIN** | Multi-prompt pipeline, sequential stages, fan-out | All Workers + Drones | Guardian (always) + Sentinel | Full Genesis + Validation + Synthesis |
+| **MEDIUM** | Multi-step, 3-5 decision points, edge cases | Scout + Builder | Guardian *if* high-stakes or confidence ≤ 6 | Full Genesis (Scout internal hypothesis) |
+| **COMPLEX** | Agentic, high-stakes, multi-format, state management | All Workers | Guardian (always) + Sentinel | Full Genesis + Hypothesis (surfaced) + Validation |
+| **CHAIN** | Multi-prompt pipeline, sequential stages, fan-out | All Workers + Drones | Guardian (always) + Sentinel | Full Genesis + Hypothesis (surfaced) + Validation + Synthesis |
 
 ### 2. GATHER context
 
