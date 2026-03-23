@@ -22,6 +22,15 @@ Phase 1: RECONNAISSANCE (Scout leads)
   → If ambiguity found: surface to human, await resolution
   → Output: Terrain Map
 
+Phase 1.5: HYPOTHESIS (Scout proposes — MEDIUM+ only)
+  [Skip for SIMPLE]
+  Scout proposes 2-3 approaches with tradeoffs:
+  → MEDIUM: internal — note approaches in terrain map, select best, proceed
+  → COMPLEX+: surface to human — present approaches, wait for selection
+  → Each hypothesis: architecture, optimizes for, trades off, best when
+  → Output: Selected approach (MEDIUM) or human's choice (COMPLEX+)
+  See castes/workers/scout.md → Hypothesis Protocol for format.
+
 Phase 2: FORAGING (Forager gathers)
   [Skip for SIMPLE tier]
   Forager searches colony memory
@@ -76,33 +85,39 @@ Phase 7: DELIVERY
 ### SIMPLE Genesis (lightweight)
 ```
 Messenger → Scout (quick assessment) → Builder → Deliver
-No Forager. No soldiers. No Guardian review.
+No Forager. No soldiers. No Guardian review. No hypothesis step.
 Builder's Originality Check is the quality gate.
 Fast, clean, appropriate for simple requests.
 ```
 
 ### MEDIUM Genesis (standard)
 ```
-Messenger → Scout → Builder → [ASSESS CONFIDENCE]
+Messenger → Scout (terrain + internal hypothesis) → Builder → [ASSESS CONFIDENCE]
   If high-stakes domain OR confidence ≤ 6:
     → Guardian (2nd pass) → Deliver final
   Else:
     → Deliver (Builder's Originality Check is the quality gate)
 Add Forager if domain has known patterns.
+Scout's internal hypothesis: 2 approaches noted, best selected, Builder executes the selection.
 ```
 
 ### COMPLEX Genesis (full)
 ```
-Messenger → Scout → Forager → Builder + Nurse → [DELIVER DRAFT] →
+Messenger → Scout (terrain + hypothesis proposals) → [SURFACE TO HUMAN] →
+Human selects approach → Forager → Builder + Nurse → [DELIVER DRAFT] →
 Guardian (2nd pass, always) → Sentinel → Deliver final
 All workers convened for construction. Soldiers review output separately.
+Scout presents 2-3 approaches with tradeoffs. Human chooses. Builder executes the choice.
 ```
 
 ### CHAIN Genesis (full + orchestration)
 ```
-Messenger → Scout → Forager → Builder (per stage) + Nurse (state design) →
+Messenger → Scout (terrain + hypothesis proposals) → [SURFACE TO HUMAN] →
+Human selects approach → Forager → Builder (per stage) + Nurse (state design) →
 [DELIVER DRAFT] → Guardian (reviews each stage, always) →
 Sentinel (systemic check) → Synthesis ritual → Deliver final
+Scout's hypotheses for CHAIN often differ on: stage count, parallelism strategy,
+or where human checkpoints sit.
 ```
 
 ## Genesis Anti-Patterns
@@ -111,6 +126,8 @@ Sentinel (systemic check) → Synthesis ritual → Deliver final
 - ❌ Full ceremony for simple requests (SIMPLE tier needs Scout + Builder, that's it)
 - ❌ Skipping adversarial review for MEDIUM+ (the Guardian catches what you miss)
 - ❌ Delivering without validation evidence for MEDIUM+ (evidence proves the output works)
+- ❌ Skipping hypothesis for COMPLEX+ (the Builder picks one approach by default — the human should pick from options)
+- ❌ Building before the human selects on COMPLEX+ (hypothesis is a stopping point, not a suggestion)
 
 ---
 
