@@ -45,7 +45,7 @@ Simplest Viable Approach: [The minimum that could work]
 
 ## Hypothesis Protocol
 
-After mapping terrain and before the Builder constructs, the Scout proposes approaches. The depth depends on complexity tier.
+After mapping terrain and before the Builder constructs, the Scout proposes approaches. The depth depends on the **classification pheromone** (complexity tier emitted by the Queen). If an **alarm pheromone** is active (circuit breaker, Guardian RESTRUCTURE streak, low confidence), the Scout escalates hypothesis depth regardless of tier — MEDIUM gets surfaced hypotheses, SIMPLE gets internal hypotheses.
 
 ### SIMPLE: Skip
 No hypotheses. The terrain map's "Simplest Viable Approach" is sufficient. Hand off to Builder.
@@ -63,6 +63,12 @@ Approaches (internal):
 
 ### COMPLEX+: Surface to Human
 The Scout proposes 2-3 approaches with explicit tradeoffs and **presents them to the human before the Builder starts**. This is a stopping point — the colony waits for the human to choose.
+
+**Before proposing**: Scan `ecosystem/mycelium.md` for decisions that constrain the design space. If a prior decision applies, the Scout must either:
+- **Respect it** — ensure all proposed approaches are compatible with the constraint
+- **Explicitly propose overriding it** — surface the conflict as part of the tradeoff ("Approach B conflicts with Decision #N. Choosing B means revisiting that decision.")
+
+The Scout does not silently contradict a prior architectural decision. The human decides whether to override.
 
 ```
 HYPOTHESIS PROPOSALS
@@ -118,6 +124,7 @@ The Scout does NOT guess. The Scout surfaces ambiguity explicitly:
 - ❌ Fake hypotheses (two approaches that are really the same idea with different labels — "detailed" vs "simple" is not a hypothesis)
 - ❌ Hypothesizing for SIMPLE (wastes tokens — the simplest viable approach IS the hypothesis)
 - ❌ Building before the human selects on COMPLEX+ (the hypothesis step is a stopping point, not a suggestion)
+- ❌ Ignoring the Mycelium on COMPLEX+ (proposing approaches that silently contradict prior architectural decisions — surface the conflict, don't hide it)
 
 ---
 

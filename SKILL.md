@@ -1,11 +1,11 @@
 ---
 name: hive-synthesis-engine
-description: "The Queen Hive — a cognitive colony architecture for production-grade prompt generation. Use this skill whenever you need to create, optimize, validate, or refine prompts, system prompts, prompt chains, prompting strategies, or AI-powered workflows. Triggers on: 'write me a prompt', 'build a system prompt', 'help me prompt engineer', 'optimize this prompt', 'make this prompt better', 'prompt chain', 'multi-turn prompt', 'agentic workflow prompt', prompt engineering, prompt writing, systematic prompt generation, or building AI-powered workflows for any domain. Also trigger when the user asks to create a new AI system, agent, or intelligence pipeline — these are queen eggs that birth new hives. If the user is building anything that requires instructing an LLM, this skill applies."
-version: 3.2
+description: "The Queen Hive — a cognitive colony architecture for production-grade prompt generation and agent skill creation. Use this skill whenever you need to create, optimize, validate, or refine prompts, system prompts, prompt chains, prompting strategies, AI-powered workflows, or agent skills (SKILL.md files). Triggers on: 'write me a prompt', 'build a system prompt', 'help me prompt engineer', 'optimize this prompt', 'make this prompt better', 'prompt chain', 'multi-turn prompt', 'agentic workflow prompt', 'build me a SKILL.md', 'create a Claude Code skill', 'make an agent skill', 'generate a skill for', prompt engineering, prompt writing, systematic prompt generation, or building AI-powered workflows for any domain. Also trigger when the user asks to create a new AI system, agent, or intelligence pipeline — these are queen eggs that birth new hives. If the user is building anything that requires instructing an LLM, this skill applies."
+version: 3.3
 author: The Colony
 ---
 
-# THE QUEEN HIVE v3.2
+# THE QUEEN HIVE v3.3
 
 **Colony Architecture for Cognitive Systems**
 
@@ -38,6 +38,7 @@ The Queen then determines what the input is:
 | Input Type | Recognition Signal | Response |
 |---|---|---|
 | **Royal Jelly** (queen egg) | "Build me a system for...", "Create an AI pipeline for...", "I need an intelligence engine for..." | Spawn a new daughter hive → read `queen/spawning.md` |
+| **Wax** (agent skill) | "Build me a SKILL.md", "Create a Claude Code skill for...", "Make an agent skill that...", "Generate a skill for [framework]" | Use `skill-blueprint` output form → three-level architecture, description-first, platform-specific placement |
 | **Pollen** (standard work) | "Write me a prompt for...", "Optimize this prompt...", "Build a prompt chain for..." | Convene castes, execute ritual → see Convening below |
 | **Nectar** (self-improvement) | "Make yourself better", "How could we improve...", "What's missing in..." | Turn inward → read `rituals/evolution.md` with self as subject |
 
@@ -63,6 +64,7 @@ Before convening castes:
 - Read relevant `output-forms/` file for the expected output shape
 - Read `memory/patterns.md` if the domain has known patterns
 - Read `memory/antipatterns.md` if the domain has known failure modes
+- Read `ecosystem/mycelium.md` for COMPLEX+ — architectural decisions that constrain the design space
 
 ### 3. CONVENE and execute
 
@@ -91,6 +93,7 @@ Read the caste files for each convened being. Execute the appropriate ritual.
 |---|---|---|
 | Genesis | `rituals/genesis.md` | Creating something new |
 | Evolution | `rituals/evolution.md` | Improving what exists |
+| Pruning | `rituals/pruning.md` | Periodic — major version bumps, repeated Evolution patches in same area, beekeeper request |
 | Validation | `rituals/validation.md` | MEDIUM+ complexity |
 | Synthesis | `rituals/synthesis.md` | Assembling final output from multi-stage work |
 | Adaptation | `rituals/adaptation.md` | Gap detected — reinforce, call sibling, spawn, or surface |
@@ -100,10 +103,12 @@ Read the caste files for each convened being. Execute the appropriate ritual.
 | Output Form | File | When |
 |---|---|---|
 | System Prompt | `output-forms/system-prompt.md` | Generating a system prompt |
+| Skill Blueprint | `output-forms/skill-blueprint.md` | Input is Wax — building a SKILL.md / agent skill |
 | Chain Architecture | `output-forms/chain-architecture.md` | Generating a multi-prompt pipeline |
 | Tool Definition | `output-forms/tool-definition.md` | Defining tools/functions |
 | Hive Blueprint | `output-forms/hive-blueprint.md` | Spawning a new daughter hive |
 | Validation Report | `output-forms/validation-report.md` | Producing validation evidence |
+| Skill Validation Report | `output-forms/skill-validation-report.md` | Validating a SKILL.md (different criteria than prompt validation) |
 
 | Memory | File | When |
 |---|---|---|
@@ -118,6 +123,10 @@ Read the caste files for each convened being. Execute the appropriate ritual.
 | Spawning | `queen/spawning.md` | Input is royal jelly (new hive request) |
 | Colony Language | `queen/language.md` | Always — shared syntax and semantics |
 | Lineage | `queen/lineage.md` | Referencing or connecting existing hives |
+
+| Ecosystem | File | When |
+|---|---|---|
+| Mycelium | `ecosystem/mycelium.md` | COMPLEX+ — architectural decisions that constrain the design space. Also during Evolution (constraint check) and Spawning (inheritance classification). |
 
 ## The Colony Tongue
 

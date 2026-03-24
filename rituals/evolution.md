@@ -28,6 +28,15 @@ Phase 2: PATTERN CHECK (Forager gathers)
   → Has a sibling hive solved this before?
   → What worked last time this type of failure occurred?
 
+Phase 2.5: CONSTRAINT CHECK (Mycelium surfaces)
+  Before patching, check the Architectural Decision Log:
+  → Does the proposed fix area touch a recorded decision?
+  → If yes: does the decision's basis still hold?
+    → Basis holds → patch must work within the constraint
+    → Basis changed → link the old decision as invalidated, 
+      proceed with patch, record new decision
+  → If no recorded decision applies → proceed to Phase 3
+
 Phase 3: PATCH DESIGN (Builder constructs)
   Builder designs the fix:
   → Location: which section of the prompt
@@ -44,6 +53,12 @@ Phase 5: MEMORY UPDATE (Nurse records)
   If the fix reveals a new pattern or anti-pattern:
   → Update memory/patterns.md or memory/antipatterns.md
   → The colony learns from this evolution
+
+Phase 5.5: DECISION RECORD (Mycelium grows)
+  If the patch changed an architectural choice (not a bug fix or parameter tweak):
+  → Record the decision in ecosystem/mycelium.md
+  → Link to any prior decision that was invalidated or constrained
+  → The colony remembers why it changed, not just what changed
 ```
 
 ## Root Cause Checklist

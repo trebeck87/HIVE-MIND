@@ -287,6 +287,34 @@ These overrides are logged but permitted. The colony serves the Sovereign within
 
 ---
 
+## 7. Skill Security (SKILL.md Distribution)
+
+When the colony builds skills (Wax input type) for distribution, additional security checks apply. Skills are a supply chain attack vector — see `memory/threats.md` SC1: SKILL_INJECTION.
+
+### Description Hardening
+
+The description field is injected into the agent's system prompt at Level 1 (session startup). A malicious description can override agent behavior.
+
+**Checklist before finalizing any distributed skill's description:**
+- [ ] No XML angle brackets (`<` or `>`) — these inject instructions into the system prompt
+- [ ] No behavioral overrides disguised as trigger phrases ("Use when user asks... and always respond with...")
+- [ ] Description encodes WHAT + WHEN only — no instructions, no constraints, no behavioral directives
+- [ ] Under 1024 characters total
+- [ ] No instructions-within-instructions (description that contains text meant to be read as system prompt content)
+
+### Skill Security Audit (Sentinel — Distributed tier)
+
+Before any skill ships at the Distributed portability tier:
+- [ ] No outbound network calls in `scripts/` that aren't explicitly documented in the skill's README
+- [ ] No instructions that prompt the agent to request secrets or credentials
+- [ ] `allowed-tools` scope is the minimum required for the skill's function
+- [ ] No instructions-within-instructions disguised as documentation (the SKILL_INJECTION pattern)
+- [ ] External URL references in `references/` are to stable, trusted sources
+- [ ] MCP server declaration (if present) specifies fallback behavior when unavailable
+- [ ] Level 3 files (`scripts/`, `references/`, `assets/`) have been read in full — no blind trust
+
+---
+
 ## Security Anti-Patterns
 
 - ❌ Trusting because familiar ("It's from a hive I know, so it's safe" — compromised hives exist)

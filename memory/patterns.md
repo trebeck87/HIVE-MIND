@@ -9,7 +9,7 @@ Accumulated wisdom — what works. Every entry is earned through real deployment
 ### P1: Front-Load the Mission
 Place `<core_objective>` in the first 50 tokens of any system prompt. Claude weights early content heavily. A buried objective gets diluted by preceding constraints.
 
-**Earned from**: HIVE-ALPHA Stage 2 — moving the objective above constraints improved thesis specificity by noticeable margin.
+**Earned from**: a production daughter hive — moving the objective above constraints improved output specificity by noticeable margin.
 
 ### P2: Examples Over Explanations (The 70% Rule)
 One good example teaches more than three paragraphs of instruction. For every prompt:
@@ -17,7 +17,7 @@ One good example teaches more than three paragraphs of instruction. For every pr
 - 1 boundary example (edge of acceptable)
 - 1 anti-pattern with annotation (common failure + why it fails)
 
-**Earned from**: HIVE-ALPHA Portfolio Construction — adding bullish/bearish market examples eliminated the "equal weight everything" failure mode.
+**Earned from**: a production daughter hive — adding condition-specific examples (e.g., positive vs. negative scenarios) eliminated the "equal weight everything" failure mode.
 
 ### P3: Separate Hard Rules from Soft Guidance
 Use `<constraints>` for non-negotiable rules and `<guidelines>` or prose for preferences. When everything is a "constraint," Claude treats actual constraints as suggestions.
@@ -25,13 +25,13 @@ Use `<constraints>` for non-negotiable rules and `<guidelines>` or prose for pre
 ### P4: Typed JSON Schemas Beat Prose Descriptions
 Instead of "return a JSON with the action, conviction, and thesis," show the exact schema with type annotations:
 ```
-{"action": "BUY"|"SELL"|"HOLD", "conviction": 1-10, "thesis": "2-3 sentences"}
+{"action": "APPROVE"|"REJECT"|"REVIEW", "conviction": 1-10, "reasoning": "2-3 sentences"}
 ```
 
 ### P5: Prefill for Format Lock
 Assistant prefill (`{` or `[{`) eliminates ~5% of format failures where Claude wraps JSON in markdown. Use for every stage that requires machine-parseable output.
 
-**Earned from**: HIVE-ALPHA v3 — implementing prefill across all API calls.
+**Earned from**: a production daughter hive v3 — implementing prefill across all API calls.
 
 ---
 
@@ -40,17 +40,17 @@ Assistant prefill (`{` or `[{`) eliminates ~5% of format failures where Claude w
 ### C1: Each Stage Gets Its Own Failure Behavior
 Never let one stage's failure cascade silently. Define per-stage: what happens on parse error, on timeout, on empty response. Deterministic fallbacks preserve the pipeline.
 
-**Earned from**: HIVE-ALPHA — Stage 1 fallback (equal-weight momentum) keeps the system functional when the API fails.
+**Earned from**: a production daughter hive — Stage 1 fallback (equal-weight default) keeps the system functional when the API fails.
 
 ### C2: Compressed Input for Batch Stages
 When a stage processes multiple items sequentially, compress the per-item input to minimize tokens. Single-line pipe-delimited format for signal data. Save verbose format for single-item deep dives.
 
-**Earned from**: HIVE-ALPHA Stage 3 — compressed sweep messages vs. verbose Stage 2 messages.
+**Earned from**: a production daughter hive — compressed batch messages vs. verbose single-item messages.
 
-### C3: Portfolio Context in Every Call
-When a chain makes decisions about parts of a whole (individual stocks in a portfolio, clauses in a contract), inject the whole-system context into every per-item call. Without it, the model optimizes locally but creates systemic problems.
+### C3: Whole-System Context in Every Call
+When a chain makes decisions about parts of a whole (items in a batch, clauses in a contract, entries in a dataset), inject the whole-system context into every per-item call. Without it, the model optimizes locally but creates systemic problems.
 
-**Earned from**: HIVE-ALPHA — adding portfolio concentration and sector exposure to sweep messages.
+**Earned from**: a production daughter hive — adding whole-system context (concentration, category exposure) to per-item messages.
 
 ### C4: State Flows Downstream, Not Upstream
 Design chains so each stage only needs output from prior stages, never from later ones. If you find a stage needing future state, restructure the chain.
@@ -108,6 +108,19 @@ The Forager should bring back not just the matching pattern but a contrasting ap
 
 ### O3: The Messenger Standard Applies to Output
 "My queen says meh" isn't just for inputs. If the colony's own gatekeeper would reject the output as bland or generic, it's not ready to ship. Specificity is the minimum bar — specific to the domain, specific to the problem, specific to what makes this request different from the last one.
+
+---
+
+## Skill Patterns
+
+### S1: Description-First Design
+When building any SKILL.md, the description field is written before instructions. The description is not documentation — it is the trigger condition the agent uses to decide whether to activate this skill. A skill that never triggers is worse than no skill.
+
+**Pattern**: `[capability statement]. Use when user asks to "[phrase 1]", "[phrase 2]", "[phrase 3]".` with 3-5 trigger phrases that mirror real human phrasing — first person, natural language, the way a person actually talks ("help me", "write me", "I need").
+
+**Constraint**: Max 1024 characters. No XML angle brackets. Must encode both WHAT (capability) and WHEN (specific trigger phrases).
+
+**Earned from**: SKILL.md open standard research — the #1 differentiator between skills that activate reliably and skills that sit dormant. See Anti-pattern A18.
 
 ---
 

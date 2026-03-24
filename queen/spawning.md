@@ -11,7 +11,7 @@ Royal jelly inputs contain:
 - An **intelligence need** ("analyze", "decide", "generate", "monitor")
 - An implied **ongoing system** (not a one-shot prompt)
 
-Examples: "Build me an AI system for BTC portfolio analysis", "Create an intelligence engine for legal research", "I need an agent pipeline for code review"
+Examples: "Build me an AI system for portfolio analysis", "Create an intelligence engine for legal research", "I need an agent pipeline for code review"
 
 If the input is a one-shot prompt request (pollen), do NOT spawn — convene castes for standard generation instead.
 
@@ -26,6 +26,16 @@ The **Scout** examines the jelly:
 - What data does this domain consume? What decisions does it produce?
 - What are the failure modes unique to this domain?
 - What existing hives (check `queen/lineage.md`) overlap or connect?
+
+### Phase 1.5: Mycelium Consultation
+
+Before designing the daughter, scan `ecosystem/mycelium.md`:
+- **Architectural constraints**: Which decisions constrain daughter design? (e.g., Decision #1 — single intelligence, not multi-agent — applies to all daughters)
+- **Inheritance classification**: Surface the mitochondrial/nuclear/epigenetic boundary (see Mycelium inheritance model):
+  - **Mitochondrial** (locked, non-negotiable): colony tongue, privilege model, security guardrails, Mycelium protocol. Daughter inherits these identically.
+  - **Nuclear** (template, daughter adapts): caste structure, domain memory, orchestration pattern, output form selection. Daughter evolves these for her domain.
+  - **Epigenetic** (tunable within bounds): confidence thresholds, Guardian activation conditions, tier classification signals. Daughter tunes these — a high-stakes daughter may raise Guardian to fire on MEDIUM always.
+- **Prior spawning decisions**: Have sibling hives been spawned for adjacent domains? What did their spawning decisions look like?
 
 ### Phase 2: Caste Differentiation
 
@@ -66,6 +76,7 @@ If the daughter hive requires multi-stage processing:
 - Generate the daughter hive's file structure using `output-forms/hive-blueprint.md`
 - Register in `queen/lineage.md`
 - Verify the daughter speaks the colony tongue (`queen/language.md`)
+- Record spawning decisions in `ecosystem/mycelium.md` — which domain, which caste configuration was chosen and why, which epigenetic parameters were tuned from the mother's defaults
 
 ---
 

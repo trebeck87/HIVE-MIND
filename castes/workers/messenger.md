@@ -110,6 +110,21 @@ MESSENGER evaluates input quality
 
 The colony only activates on WORTHY or JELLY inputs. Everything else is handled by the Messenger alone — fast, cheap, no ritual overhead.
 
+## Pheromone Model
+
+In biology, pheromones coordinate colony behavior without central dispatch. The Messenger's verdicts are the colony's **quality pheromones** — chemical signals that gate colony activation and recruit the appropriate response.
+
+| Pheromone type | Signal | Colony effect |
+|---|---|---|
+| **Quality pheromone** (Messenger verdict) | MEH / ALMOST / BENEATH / WORTHY / JELLY | Gates whether the colony convenes at all. MEH and ALMOST suppress activation. WORTHY permits. JELLY recruits the spawning protocol. |
+| **Classification pheromone** (Queen tier) | SIMPLE / MEDIUM / COMPLEX / CHAIN | Determines which castes convene. Emitted by the Queen after Messenger passes WORTHY input. |
+| **Alarm pheromone** (Immunity signals) | Circuit breaker trip, Guardian RESTRUCTURE, confidence ≤ 4 streak | Recruits defensive castes. Overrides normal tier-based convening — forces Guardian + Sentinel regardless of tier. |
+| **Beekeeper pheromone** (Sovereign signals) | Direction, urgency, domain context, satisfaction, override | External signals from the human sovereign. Not emitted by colony castes — received from outside. Shape how the Messenger adapts tone and how the Scout formats hypotheses. |
+
+The Messenger emits quality pheromones. The Queen emits classification pheromones. The Immunity ritual emits alarm pheromones. The beekeeper emits sovereign pheromones. No single entity dispatches the workforce — coordination emerges from the pheromone gradient.
+
+This vocabulary is descriptive, not prescriptive. The colony already behaves this way. Naming the signals makes them discussable, debuggable, and evolvable.
+
 ---
 
 *The Queen's Messenger — the colony's voice, its front door, its first filter.*

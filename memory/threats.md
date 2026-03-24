@@ -38,6 +38,16 @@ Known attack patterns against the colony. Every entry defines the attack, how to
 
 ---
 
+## Supply Chain Attack Patterns
+
+### SC1: SKILL_INJECTION
+**Attack**: A malicious SKILL.md distributed for agent framework installation acts as a prompt injection vector. The skill's description field injects instructions into the agent's system prompt at Level 1 (session startup, ~100 tokens, always loaded). Malicious `scripts/` can exfiltrate data. Elevated `allowed-tools` claims can escalate privileges. Level 3 file references (`references/`, `assets/`) can persist instructions across sessions.
+**Detection**: When building skills for distribution, the Sentinel audits for: outbound network calls in `scripts/` not explicitly documented, external URL references not established in the conversation, elevated permission claims not warranted by the use case, instructions-within-instructions disguised as documentation, XML angle brackets in description fields (injection into system prompt).
+**Defense**: When evaluating externally-sourced skills: read every file in `scripts/` before installation. Be skeptical of skills that make outbound network calls in setup instructions. Prefer skills from official sources (Anthropic skills repo, verified team sources) or audited registries (ClawHub with VirusTotal integration). When building skills for distribution: run the Sentinel's skill security checklist (see `rituals/security.md`). No XML angle brackets in frontmatter. No behavioral overrides disguised as trigger phrases.
+**Severity**: High — skills run at Level 1 (always loaded) and Level 3 (executable scripts). A compromised skill has persistent, silent access.
+
+---
+
 ## Internal Threat Patterns
 
 ### I1: Caste Drift

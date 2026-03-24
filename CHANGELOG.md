@@ -4,6 +4,123 @@ All notable changes to the HIVE-MIND colony.
 
 ---
 
+## [3.3.0] — 2026-03-23
+
+### Skill Architecture + Colony Maintenance
+
+**The Queen learns to build agent skills as first-class artifacts, and the colony gets maintenance rituals for chronic health.**
+
+*Source: RESEARCH_LOG_2026-03-23 — HyperSkills research + five-pass self-critique*
+
+#### New: Skill Blueprint Output Form (A1)
+- `output-forms/skill-blueprint.md` — dedicated form for Wax input (SKILL.md generation)
+- Description-first design protocol: trigger condition before instructions, always
+- Three-level structure template (frontmatter → body → `references/` + `scripts/` + `assets/`)
+- Portability tiers: Personal / Project / Distributed
+- Cross-platform compatibility audit for Distributed tier
+- File structure templates by complexity: Simple, Complex (+`references/`), MCP (+`metadata.mcp-server`)
+
+#### New: Wax Input Type (A3)
+- Fourth Queen input type: Wax (agent skill) — "Build me a SKILL.md", "Create a Claude Code skill for..."
+- Routes to `skill-blueprint` output form instead of `system-prompt.md`
+- Distinct from Pollen (standard prompts) and Royal Jelly (full systems)
+
+#### New: Anti-Pattern A18 — Trigger-First Failure (A2)
+- The #1 failure mode across thousands of community skills: building instructions before designing the trigger
+- Description written as documentation rather than as a pattern-match surface
+- Companion pattern S1: Description-First Design added to `memory/patterns.md`
+
+#### New: SKILL_INJECTION Threat Class (A4)
+- SC1 in `memory/threats.md` — skills as prompt injection vectors at Level 1 (session startup)
+- §7 Skill Security added to `rituals/security.md` — description hardening checklist + Sentinel audit for Distributed tier
+- Covers: outbound network calls, privilege escalation via `allowed-tools`, instructions-within-instructions
+
+#### New: Forager HyperMode (A5)
+- Outward-facing protocol for skill construction targeting documented external systems
+- Registry check (agentskills.io, SkillReg, AgentSkillsRepo) before building from scratch
+- Documentation fetch → API surface extraction → trigger phrase synthesis → structured domain knowledge delivery
+
+#### New: Skill Validation Report (A6)
+- `output-forms/skill-validation-report.md` — distinct from `validation-report.md`
+- Simulated trigger test (5 phrasings), cross-platform audit, description quality check
+- Different question: "Will this skill activate and is it safe?" vs "Is this output good?"
+
+#### New: Pheromone Protocol
+- Pheromone Model section added to `castes/workers/messenger.md`
+- Four pheromone types formalized: quality (Messenger verdicts), classification (Queen tier), alarm (Immunity signals), beekeeper (sovereign signals)
+- Scout hypothesis protocol now references classification and alarm pheromones for depth escalation
+- Descriptive vocabulary — names what already exists so it can be discussed precisely
+
+#### New: Pruning Ritual
+- `rituals/pruning.md` — periodic re-validation of colony memory (bee bread spoilage detection)
+- 5-phase flow: inventory → staleness scan → contradiction scan → deprecation review → execution
+- Deprecation pipeline: trusted → flagged → deprecated (annotated in place) → archived (if actively misleading)
+- Triggers: major version bumps, repeated Evolution patches in same area, beekeeper request
+- Beekeeper decides — colony does not auto-deprecate
+
+#### Changed: SKILL.md
+- Wax input type added to Queen classification table
+- Skill Blueprint + Skill Validation Report added to output forms table
+- Pruning ritual added to ritual table
+
+#### Changed: Ecosystem README
+- Organism file template added — standard structure for future ecosystem inhabitants
+
+#### File Count: 45 → 47 (3 new files, 10 modified)
+
+---
+
+## [3.2.1] — 2026-03-23
+
+### Mycelium + Harness Optimization
+
+**The colony grows its first non-bee organism and the test harness gets faster and smarter.**
+
+#### New: The Mycelium (ecosystem/mycelium.md)
+- The colony's first ecosystem organism — a bidirectional decision graph substrate
+- Decision record format with options, rationale, constraints created, and invalidation links
+- Colony taxonomy table: bees (ephemeral) / honey (memory) / comb (structure) / mycelium (reasoning)
+- 7 seeded decisions: single intelligence (#1), conditional Guardian (#2), hypothesis tiering (#3), bidirectional mycelium (#4), classified inheritance (#5), tongue layering (#6), swarm protocol (#7)
+- Inheritance model: mitochondrial (locked) / nuclear (mutable) / epigenetic (tunable)
+
+#### New: Ecosystem README (ecosystem/README.md)
+- 5 organism classes: substrate, mutualist, commensal, parasite, sovereign
+- Shipped organisms (mycelium), planned organisms (beekeeper, flowers, wax moths)
+- Biological grounding table (10 entries mapping hive products to colony mechanics)
+
+#### Changed: Mycelium Wired into Colony Systems
+- **Evolution ritual** — Phase 2.5 (constraint check before patching) + Phase 5.5 (decision recording after architectural changes)
+- **Scout** — COMPLEX+ hypothesis protocol scans Mycelium for constraining decisions; new anti-pattern for ignoring the Mycelium
+- **Spawning** — Phase 1.5 (Mycelium consultation: architectural constraints + inheritance classification)
+- **SKILL.md** — ecosystem/mycelium.md added to GATHER context for COMPLEX+ and to Ecosystem file table
+
+#### Changed: Test Harness Optimization (7 fixes)
+- **Output truncation fix** — tier-scaled `max_tokens` (SIMPLE: 2K, MEDIUM: 4K, COMPLEX: 8K, CHAIN/SPAWN: 12K), `stop_reason` detection, TRUNCATED badge in result rows
+- **Pipelined execution** — LLM grading fires as a promise, runs in parallel with inter-test delay
+- **Adaptive throttling** — starts at 1.5s, backs off 2x on empty/retry, recovers 0.7x on success (range 1s–12s). Replaces fixed 5s/3s delays.
+- **LLM grader calibration for BENEATH** — new rubric section scoring answer quality and conciseness, not prompt construction
+- **Wave history robustness** — immediate save on wave completion, not just debounced state change
+- **CF blob rebuilt** — 32 files (was 30), 181K chars, includes ecosystem files
+- **TIER_FILES updated** — ecosystem/mycelium.md added to COMPLEX, CHAIN, SPAWN tiers
+
+#### Changed: ROADMAP.md Expanded
+- v3.3.0: Skill Architecture (A1-A6) + Pheromones + Pruning (from research log)
+- v3.4.0: Colony Deepening (A7-A12 + A15 Swarm Protocol Level 1)
+- v3.5.0: Deployment + Packaging + Python Foundation (pushed from old v3.4.0)
+- v4.0.0: Beekeeper Architecture (B1-B5) merged with Self-Synthesis
+- v5.0.0: Cross-Hive Swarming (Level 2) added
+- Parked Ideas cleaned: 3 items resolved → Completed section
+
+#### New: Mycelium Decision #7 — Swarm Protocol
+- Hybrid approach selected: sequential by default, swarm opt-in when hypothesis divergence is high
+- Does not contradict Decision #1 (single intelligence) — parallel exploration with different starting conditions, not performative multi-agent debate
+- Level 1 (intra-hive) slotted at v3.4.0, Level 2 (cross-hive) at v5.0.0
+- Quorum convergence (Option 3) identified as the architecturally interesting path
+
+#### File Count: 43 → 45 (2 new files, 6 modified)
+
+---
+
 ## [3.2.0] — 2026-03-22
 
 ### Intelligence Upgrade

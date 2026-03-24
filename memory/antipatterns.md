@@ -121,4 +121,15 @@ Scar tissue — what fails. Every entry was learned the hard way.
 
 ---
 
+## Skill Anti-Patterns
+
+### A18: Trigger-First Failure
+**Failure**: Beautifully written skill instructions that never activate because the description doesn't match how users actually phrase requests.
+**Root Cause**: Builder constructed instructions before designing the trigger condition. The description was written as documentation rather than as a pattern-match surface. The description says *what* the skill does but not *when* to invoke it.
+**Fix**: Description is the most important line in any SKILL.md. Write it first. It must encode both WHAT (capability) and WHEN (specific trigger phrases that mirror real human phrasing). `description: Helps with documents` is a category error — it describes what, not when. Standard: `[capability statement]. Use when user asks to "[phrase 1]", "[phrase 2]", "[phrase 3]".` with 3-5 real human phrasings of the same intent.
+
+**Scar from**: SKILL.md open standard adoption — identified as the #1 failure mode across thousands of community skills. Skills that don't trigger are worse than no skill — they consume ~100 tokens of Level 1 context on every session startup while providing zero value.
+
+---
+
 *Colony Anti-Patterns — the hive remembers its scars.*

@@ -75,7 +75,7 @@ Every publishable daughter hive includes a `hive-manifest.json` at its root. Thi
     ],
     "sends_to": [
       {
-        "hive": "hive-legal-advisory",
+        "hive": "hive-legal",
         "query_type": "validation",
         "reason": "Regulatory compliance checks on clinical trial protocols"
       }
@@ -176,7 +176,7 @@ To add a community hive to your colony:
    - Domain: Medical research & clinical analysis
    - Status: Active
    - Accepts: assessment, lookup
-   - Connections: → hive-legal-advisory (regulatory validation)
+   - Connections: → hive-legal (regulatory validation)
 
 3. Verify compatibility:
    - colony.tongue_version matches your queen/language.md version

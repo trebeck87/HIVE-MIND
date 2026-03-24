@@ -123,7 +123,7 @@ The first colony was hand-raised (Bootstrap Stage 1). The test harness validated
 
 ---
 
-## v3.2.0 — Intelligence Upgrade ✅ BUILT (pending tag)
+## v3.2.0 — Intelligence Upgrade ✅ SHIPPED
 
 ### Colony Evolution
 - [x] Hypothesis generation step (between Scout and Builder for COMPLEX+)
@@ -158,35 +158,35 @@ The first colony was hand-raised (Bootstrap Stage 1). The test harness validated
 
 ---
 
-## v3.2.1 — Cleanup + Mycelium 🔜 NEXT
+## v3.2.1 — Cleanup + Mycelium ✅ SHIPPED
 
 The pragmatic near-term. Two tracks: debt cleanup and the first ecosystem organism.
 
 ### Track 1: Debt Cleanup
 - [x] ~~Genericize memory files~~ — completed in v3.2.0
 - [x] ~~Rebuild test harness embedded colony files~~ — completed in v3.2.0
-- [ ] Move completed items from Parked Ideas to Completed section
+- [x] Move completed items from Parked Ideas to Completed section
 
 ### Track 2: The Mycelium
 The colony's first non-bee organism. A **bidirectional** decision graph substrate — the hive writes decisions in, the Mycelium surfaces constraints during active work. Not a passive archive.
 
-- [ ] `ecosystem/mycelium.md` — decision record format, colony taxonomy (bees/honey/comb/mycelium), inheritance model (mitochondrial/nuclear/epigenetic), seeded with Decisions #1-6
-- [ ] `ecosystem/README.md` — ecosystem taxonomy and organism classes (mutualists, symbiotic substrate, commensal/parasitic, adversarial), biological grounding table
-- [ ] Wire mycelium into Evolution ritual — before patching, check ADL for prior decisions that constrain the change
-- [ ] Wire mycelium into Scout's Hypothesis Protocol — hypotheses for COMPLEX+ reference relevant prior decisions
-- [ ] Wire mycelium into Spawning — surface mitochondrial vs. nuclear trait boundary during daughter creation
-- [ ] Add `ecosystem/` to TIER_FILES for COMPLEX+ (decision context loaded when architectural choices are being made)
+- [x] `ecosystem/mycelium.md` — decision record format, colony taxonomy (bees/honey/comb/mycelium), inheritance model (mitochondrial/nuclear/epigenetic), seeded with Decisions #1-7
+- [x] `ecosystem/README.md` — ecosystem taxonomy and organism classes (mutualists, symbiotic substrate, commensal/parasitic, adversarial), biological grounding table
+- [x] Wire mycelium into Evolution ritual — Phase 2.5 constraint check + Phase 5.5 decision recording
+- [x] Wire mycelium into Scout's Hypothesis Protocol — COMPLEX+ scans Mycelium for constraining decisions
+- [x] Wire mycelium into Spawning — Phase 1.5 Mycelium consultation with inheritance classification
+- [x] Add `ecosystem/` to TIER_FILES for COMPLEX+ (decision context loaded when architectural choices are being made)
 
 ### Track 3: Test Harness Optimization
 The harness works but runs inefficiently — sequential calls with static delays, token-heavy context per call, and test prompts that don't align with documented usage.
 
-- [ ] **Pipelined execution** — overlap LLM grading call for test N with colony call for test N+1. The grading call is ~8K tokens; the colony call is ~150K. Pipelining cuts dead time in half without doubling peak token throughput.
-- [ ] **Adaptive throttling** — replace static delays with backoff-on-empty. Start fast, increase delay when rate limiter hits, decrease when calls succeed. Currently using fixed 5s/3s delays regardless of model or load.
-- [ ] **Test prompt alignment with README** — swap test prompts to match README usage examples where applicable. Users who follow the README should see behavior consistent with what the test bank validated.
-- [ ] **LLM grader calibration for BENEATH** — the grader currently penalizes BENEATH responses for "not building a prompt." BENEATH responses are correct colony behavior (answering directly, no ritual). The grading rubric should score BENEATH on answer quality and conciseness, not on prompt construction.
-- [ ] **Messenger sensitivity tuning** — the colony classifies some WORTHY inputs as MEH/ALMOST (e.g., "Write a prompt to classify customer support tickets by urgency" triggered ALMOST). Investigate whether this is Messenger calibration or model stochasticity. If consistent, patch messenger.md.
-- [ ] **Wave history viewer** — persistent view of all saved waves in storage, accessible without re-running. Currently wave data saves to `window.storage` but is only visible while the artifact is open with the wave in state. If the user switches screens mid-run or closes the artifact, completed wave data exists in storage but can't be accessed. Add a "Load History" panel that reads from storage on mount and displays past waves independently of current run state.
-- [ ] **Output truncation fix** — `callAPI` hardcodes `max_tokens: 4000`. COMPLEX/CHAIN/SPAWN outputs with hypothesis proposals, validation evidence, and full prompt construction routinely exceed this. Colony gets cut off mid-output, causing downstream regex failures on elements that would have appeared later. Fix: tier-scaled max_tokens (SIMPLE: 2000, MEDIUM: 4000, COMPLEX: 8000, CHAIN/SPAWN: 12000) or a dynamic approach based on system prompt size. Also display a truncation warning in the result row when `stop_reason` is `max_tokens`.
+- [x] **Pipelined execution** — LLM grading fires as a promise, runs in parallel with inter-test delay
+- [x] **Adaptive throttling** — starts at 1.5s, backs off 2x on empty/retry, recovers 0.7x on success (range 1s–12s)
+- [x] **Test prompt alignment with README** — test prompts already match README usage examples; verified, no changes needed
+- [x] **LLM grader calibration for BENEATH** — new rubric section scoring answer quality and conciseness, not prompt construction
+- [x] **Messenger sensitivity tuning** — investigated; WORTHY→ALMOST misclassification is model stochasticity, not Messenger calibration. Test prompts match README examples.
+- [x] **Wave history viewer** — immediate save on wave completion (not just debounced state change), robust storage persistence on mount
+- [x] **Output truncation fix** — tier-scaled `max_tokens` (SIMPLE: 2K, MEDIUM: 4K, COMPLEX: 8K, CHAIN/SPAWN: 12K), `stop_reason` detection, TRUNCATED badge in result rows
 
 ### Why Mycelium Ships Now
 Context rot across the development arc is already happening — decisions made in v3.0 constrain v3.2 work, but the reasoning lives only in conversation history that may not be loadable. The mycelium is the fix. It's small (one file), it's immediately useful (seed with existing decisions), and it establishes the `ecosystem/` directory for future organisms.
@@ -208,46 +208,127 @@ This grounding matters because it's not decorative — every design decision in 
 
 ---
 
-## v3.3.0 — Beekeeper + Pheromones + Pruning
+## v3.3.0 — Skill Architecture + Colony Maintenance ✅ SHIPPED
 
-The Beekeeper is the first mutualist organism. The sovereign is currently modeled as a permission tier in `rituals/security.md` — that's necessary but insufficient. The Beekeeper is an organism with behaviors, communication patterns, and failure modes.
+*Source: RESEARCH_LOG_2026-03-23 (HyperSkills research + five-pass self-critique, Passes 1-2)*
 
-### Beekeeper Organism
-- [ ] `ecosystem/beekeeper.md` — behavioral model of the human sovereign
-  - Communication patterns (how the beekeeper provides direction, feedback, overrides)
-  - Productive interaction patterns (what makes a good beekeeper)
-  - Failure modes (not just B1-B3 threats, but B4: underspecification, B5: contradictory direction, B6: absent beekeeper)
-  - Override audit trail format (links to mycelium decision records)
-- [ ] Integrate beekeeper model into Messenger — Messenger adapts tone/depth based on observed beekeeper patterns
-- [ ] Integrate beekeeper model into Scout — hypothesis surfacing format adapts to beekeeper preferences
+Two tracks: the Queen learns to build agent skills as a first-class output, and the colony gets maintenance rituals for chronic health.
+
+### Skill Architecture (Track A, Passes 1-2)
+
+**A1 — New Output Form: `skill-blueprint`**
+- [x] `output-forms/skill-blueprint.md` — dedicated form for "Build me a SKILL.md / agent skill / Claude Code skill for X"
+- [x] Add `skill-blueprint` to output forms table in `SKILL.md`
+
+**A2 — New Anti-Pattern A18: Trigger-First Failure**
+- [x] Add A18 to `memory/antipatterns.md` — the #1 failure mode across thousands of community skills
+- [x] Add Pattern S1: Description-First Design to `memory/patterns.md`
+
+**A3 — New Queen Input Type: Wax**
+- [x] Add fourth input type to Queen classification table in `SKILL.md`
+
+**A4 — SKILL_INJECTION Threat Class**
+- [x] Add SC1: SKILL_INJECTION to `memory/threats.md`
+- [x] Add §7 Skill Security to `rituals/security.md` — description hardening checklist + Sentinel audit for Distributed tier
+
+**A5 — Forager HyperMode**
+- [x] Add HyperMode protocol to `castes/workers/forager.md` — registry check, doc fetch, trigger phrase synthesis, structured domain knowledge delivery
+
+**A6 — Skill Validation Report**
+- [x] `output-forms/skill-validation-report.md` — simulated trigger test, cross-platform audit, description quality check, security audit
 
 ### Pheromone Protocol
-In real hives, pheromones coordinate colony behavior without central dispatch — queen mandibular pheromone maintains social cohesion, alarm pheromone recruits defenders, Nasonov pheromone guides foragers home. The colony already has implicit pheromones (Messenger verdicts, tier classification, colony tongue). Making them explicit creates a coordination model.
 
-- [ ] Define pheromone types in the colony:
-  - **Classification pheromones** — tier signals (SIMPLE/MEDIUM/COMPLEX/CHAIN) that determine which castes convene. Currently in SKILL.md as a table. Formalized as a signal protocol.
-  - **Quality pheromones** — Messenger verdicts (MEH/ALMOST/BENEATH/WORTHY/JELLY) that gate colony activation. Already shipped, but framing them as pheromones clarifies that they're coordination signals, not decisions.
-  - **Alarm pheromones** — circuit breaker trips, Guardian RESTRUCTURE verdicts, confidence ≤ 4 streaks. Signals that recruit defensive castes. Currently in immunity.md as thresholds.
-  - **Beekeeper pheromones** — the sovereign's communication patterns. Direction, urgency, domain context, satisfaction signals. This is what the beekeeper organism model captures.
-- [ ] Wire pheromone vocabulary into Messenger and Scout documentation (not new mechanics — naming what exists so it can be discussed precisely)
+- [x] Define pheromone types: quality (Messenger verdicts), classification (Queen tier), alarm (Immunity signals), beekeeper (sovereign signals)
+- [x] Wire pheromone vocabulary into Messenger (Pheromone Model section) and Scout (classification/alarm pheromone references in hypothesis protocol)
 
 ### Pruning Ritual (Bee Bread Spoilage Detection)
-In biology, bee bread is pollen fermented with honey and enzymes — long-term protein storage that feeds the colony when fresh pollen isn't available. Spoiled bee bread weakens the brood. Colony memory IS bee bread — raw observations fermented through quarantine into trusted patterns. The Pruning ritual detects spoilage.
 
-- [ ] `rituals/pruning.md` — periodic re-validation of colony memory
-  - Guardian + Sentinel review existing `memory/patterns.md` entries against current colony behavior
-  - Flag stale entries (technically true but no longer useful — bee bread past its shelf life)
-  - Flag contradicted entries (superseded by newer patterns — actively spoiled)
-  - Deprecation flow: trusted → flagged → deprecated → moved to infections.md as "outdated pattern"
-- [ ] Pruning trigger: every major version, or when Evolution ritual patches the same area 3+ times
+- [x] `rituals/pruning.md` — 5-phase flow: inventory → staleness scan → contradiction scan → deprecation review → execution. Deprecation pipeline with beekeeper confirmation.
+- [x] Pruning trigger: every major version, or when Evolution ritual patches the same area 3+ times
+- [x] Pruning ritual added to SKILL.md ritual table
 
 ### Ecosystem Directory Maturation
-- [ ] Ecosystem README updated with shipped organisms (mycelium, beekeeper) and biological grounding table
-- [ ] Organism template — standard format for future ecosystem inhabitants
+- [x] Ecosystem README updated with shipped organisms and biological grounding table — completed in v3.2.1
+- [x] Organism template — standard file structure added to ecosystem README
 
 ---
 
-## v3.4.0 — Python Foundation + Colony Visualization
+## v3.4.0 — Colony Deepening 🔜 NEXT
+
+*Source: RESEARCH_LOG_2026-03-23 (five-pass self-critique, Passes 2-4)*
+
+Structural fixes to the colony's own foundations. The Queen starts practicing what she teaches.
+
+### A7 — Lazy Loading Protocol *(Pass 2)*
+- [ ] Add explicit lazy loading protocol to convening protocol in `SKILL.md`
+  - Current problem: the Queen pre-loads 10+ files before generation begins. She teaches three-level progressive disclosure but doesn't practice it.
+  - Fix: caste bodies read at the moment each being speaks, not pre-loaded before the colony convenes. SIMPLE: Scout + Builder only, sequential. MEDIUM: add Guardian if/when invoked. COMPLEX/CHAIN: full cascade, but sequential-on-demand rather than bulk upfront.
+
+### A8 — Cold Context Adversarialism *(Pass 3)*
+- [ ] Guardian receives Builder's output but NOT Builder's reasoning or the Builder file. Currently Guardian watches Builder work, which contaminates the review. Fix: Guardian's context = input + Builder's finished output only.
+- [ ] Sentinel runs after Guardian with even colder context. Receives: input + final output + Guardian verdict. Nothing else. Systemic issues require fresh eyes, not downstream confirmation bias.
+
+### A9 — `memory/mechanics.md` *(Pass 3)*
+- [ ] New memory file covering the mechanistic foundations of how prompts actually work — the physics beneath the craft
+  - Why chain-of-thought works (reasoning tokens before answer tokens condition better output distributions)
+  - Why few-shot examples work (establish output distribution prior, not "illustrations help")
+  - Why constraints have diminishing returns (attention saturation threshold, varies by model generation)
+  - Why hedge language fails (probabilistic operators, not stylistic choices)
+  - Why front-loading works (first 50 tokens condition everything downstream)
+  - Model generation differences table (Claude 2 → Current)
+  - First-principles reasoning protocol for novel domains where craft knowledge runs out
+
+### A10 — Prompt Debt Audit Protocol *(Pass 3)*
+- [ ] Proactive health check triggered by age or patch count, not failure
+  - Constraint count audit (are constraints load-bearing or decorative?)
+  - Patch history depth (how many times has this area been patched?)
+  - Cross-caste agreement score (do Scout and Guardian agree on what this prompt does?)
+  - Edge case coverage assessment
+- [ ] Wire into Evolution ritual as periodic trigger (not just acute failure response)
+
+### A11 — Messenger Recalibration Protocol *(Pass 3)*
+- [ ] Feedback loop for Messenger calibration
+  - When output fails, trace back to Messenger verdict for that input
+  - WORTHY → bad output = calibration error (should have caught something)
+  - MEH → human override → good output = calibration error (too aggressive)
+  - Calibration errors log to `messenger-calibration.md` (prevents overcorrection)
+  - After 3+ calibration errors in a category, recalibration applies
+
+### A12 — Memory Temporal Markers *(Pass 4)*
+- [ ] Add temporal metadata to `memory/patterns.md` and `memory/antipatterns.md` entries
+  - `[Model Era: Claude 2 / Claude 3 / Current]` tag per entry
+  - `[Confidence: HIGH/MEDIUM/LOW — may decay with model improvements]` tag
+  - `[DEPRECATED]` status for patterns that model capability improvements have made obsolete
+  - Deprecated patterns stay in memory with annotation explaining why (the graveyard becomes labeled)
+
+### A15 — Swarm Protocol (Level 1: Intra-Hive) *(Mycelium Decision #7)*
+- [ ] Opt-in parallel exploration mode for COMPLEX+ when hypothesis divergence is high
+  - Scout identifies 2-3 approaches (existing hypothesis protocol). When divergence is genuinely high and stakes justify cost, SWARM mode triggers.
+  - Builder constructs all N hypotheses in parallel API calls (not sequential — deferred commitment)
+  - Guardian runs **comparative review** — not "is this good" but "rank these and explain why"
+  - Human selects from finished work, or colony synthesizes best elements across outputs
+  - Token budget gate: swarm only if estimated build cost × N is within session budget
+- [ ] Trigger conditions: explicit beekeeper request, OR Scout signals high uncertainty + COMPLEX+ tier
+- [ ] Comparative Guardian rubric: ranking, tradeoff articulation, synthesis recommendation
+- [ ] Convergence protocol: how does the colony produce a single deliverable from N parallel outputs when no single output is clearly superior?
+- [ ] Level 2 (cross-hive swarm) and Level 3 (resource-pressure colony fission) deferred — see Mycelium Decision #7
+
+---
+
+## v3.5.0 — Deployment + Packaging + Python Foundation
+
+### A13 — Deployment Stakes Field *(Pass 4)*
+- [ ] Add optional `stakes:` field to colony intake
+  - Values: EXPLORATORY (low consequence) / PRODUCTION (moderate) / CRITICAL (maximum rigor)
+  - Effect: CRITICAL escalates Guardian to mandatory regardless of tier, adds Sentinel, increases edge case coverage. EXPLORATORY skips Guardian on SIMPLE.
+
+### A14 — Self-Packaging Ritual *(Pass 3)*
+- [ ] Protocol for the Queen to generate a portable, installable version of herself
+  - Level 1 (frontmatter, ~100 tokens) + Level 2 (convening protocol, <5k tokens) travel in the package
+  - Level 3 (caste and ritual bodies) fetched at runtime from canonical repository URL
+- [ ] `rituals/packaging.md` — the self-packaging ritual
+- [ ] `queen/self-manifest.md` — the portable self-descriptor
 
 ### CLI Tool
 - [ ] Python package: `hive_mind/`
@@ -347,8 +428,8 @@ HIVE-MIND/
 │   └── reporter.py      ← JSON/markdown output
 ├── ecosystem/           ← organisms beyond the hive
 │   ├── README.md
-│   ├── mycelium.md
-│   └── beekeeper.md
+│   └── mycelium.md
+├── beekeeper/           ← tending + adversarial beekeeper (v4.0)
 ├── hive/                ← the colony (current root files move here at v4.0)
 ├── tests/
 │   ├── hive-test-harness.jsx  ← visual dashboard (stays)
@@ -358,9 +439,51 @@ HIVE-MIND/
 
 ---
 
-## v4.0.0 — Self-Synthesis + Ecosystem (BREAKING)
+## v4.0.0 — Beekeeper Architecture + Self-Synthesis (BREAKING)
 
-### Colony Evolution
+*Source: RESEARCH_LOG_2026-03-23 (five-pass self-critique, Passes 4-5 + Beekeeper Insight)*
+
+v3.x made the Queen excellent at what she was. v4.0 questions what she should be. The Queen doesn't get replaced — she gets contextualized. One component of a larger system rather than the whole system.
+
+### Beekeeper Architecture (Track B)
+
+A new first-class component at the same structural level as `queen/`, `castes/`, `rituals/`. Not an ecosystem organism — a peer to the colony itself.
+
+**B1 — `beekeeper/ROLE.md`**
+- [ ] What the beekeeper is: external to the colony, omniscient perspective, the thinking partner the Queen structurally cannot be, the only entity with a theory of the colony's dissolution
+- [ ] Two modes: tending beekeeper (develops clarity, monitors health, holds succession theory) and adversarial beekeeper (exploits colony trust — split from `memory/threats.md`)
+- [ ] What the beekeeper does that the Queen cannot: faces human before the gate, asks the architecture question, holds stakes, monitors chronic health, holds dissolution theory
+
+**B2 — `beekeeper/tending.md`**
+- [ ] The clarity protocol — how the beekeeper works with humans before invoking the colony:
+  1. Intent surface: What is the human trying to accomplish?
+  2. Understanding check: Do they understand their own problem well enough to specify it?
+  3. Architecture question: Is a prompt the right answer, or is this a retrieval/logic/design problem?
+  4. Stakes assessment: What is the consequence of the prompt being wrong?
+  5. Colony decision: Invoke the Queen / invoke a daughter / don't invoke the colony at all
+  6. Input formulation: If invoking, translate the human's raw request into optimal colony input
+
+**B3 — `beekeeper/health.md`**
+- [ ] What the beekeeper monitors continuously (the chronic conditions the Evolution ritual can't see):
+  - Prompt debt accumulation across colony-generated outputs
+  - Memory temporal decay (which patterns are aging toward irrelevance)
+  - Messenger calibration drift
+  - Evolution ritual frequency (too many = structural problems; too few = no feedback loop)
+  - Complexity tier distribution (SIMPLE growing → colony over-engineered; COMPLEX growing → colony under-resourced)
+
+**B4 — `beekeeper/succession.md`**
+- [ ] The dissolution theory — which Queen capabilities are durable vs temporary
+  - Durable: decomposing complex intent, detecting ambiguity, recognizing wrong task architecture
+  - Temporary: specific constraint formulation tricks, chain architecture for tasks models handle natively, security ritual sections models defend natively
+  - Signals that the transition is beginning
+  - How to tend the colony through the transition rather than into obsolescence
+
+**B5 — `beekeeper/threats.md`**
+- [ ] Adversarial beekeeper threat model — split from `memory/threats.md`
+  - Current threats.md content preserved but scoped specifically to the adversarial beekeeper
+  - `memory/threats.md` updated to reference `beekeeper/threats.md` for the beekeeper threat class
+
+### Colony Self-Synthesis
 - [ ] Self-Synthesis (Stage 3) — Harper rewrites herself through her own Evolution ritual
   - All castes convene with Queen's files as subject
   - Guardian attacks the Queen's prompts
@@ -373,11 +496,12 @@ HIVE-MIND/
 - [ ] Existing daughters may need migration guide
 
 ### Directory Restructure
-The hive moves from root to `hive/`, making room for the ecosystem as a peer:
+The hive moves from root to `hive/`, making room for the beekeeper and ecosystem as peers:
 ```
 HIVE-MIND/
+├── beekeeper/           ← tending, health, succession, threats
 ├── hive/                ← queen, castes, rituals, memory, output-forms
-├── ecosystem/           ← mycelium, beekeeper, future organisms
+├── ecosystem/           ← mycelium, future organisms
 ├── hive_mind/           ← Python package
 ├── tests/
 └── docs/
@@ -416,6 +540,13 @@ In real hives, no single bee dispatches the workforce. Coordination emerges from
 
 - [ ] Cross-colony pheromone protocol — hives advertise capabilities and load as signals, not as registry entries. Querying hives detect the strongest signal, not the closest match in a lookup table.
 - [ ] Emergent specialization — when multiple hives can handle a query, the one with the strongest confidence pheromone (highest historical accuracy in that domain) attracts the work. No dispatcher needed.
+
+### Cross-Hive Swarming (Level 2 — Mycelium Decision #7)
+Level 1 intra-hive swarming (v3.4.0) runs the same colony in parallel with different hypotheses. Level 2 runs **multiple daughter hives against the same problem** — genuinely different domain memory, patterns, and failure mode awareness. Diversity is structural, not simulated.
+
+- [ ] Cross-hive swarm protocol — invoke N daughters in parallel on the same input. Each daughter produces output shaped by her domain specialization.
+- [ ] Cross-hive convergence — comparative review across structurally diverse outputs. Synthesis protocol for combining domain-specific insights into a single deliverable.
+- [ ] Swarm quorum threshold — biological swarms converge when a quorum of scouts agree on a site. Colony equivalent: convergence when N outputs agree on core structure, even if details differ. Divergence below quorum triggers escalation to beekeeper.
 
 ### Cross-Colony Genetics (The Biological Drone Role)
 In real hives, drones carry genetic material between colonies — their only purpose is mating flights that transfer DNA from one queen's line to another. In HIVE-MIND, the architectural equivalent is cross-colony pattern propagation: patterns earned by one colony's daughters reach another colony's gene pool.
@@ -458,9 +589,6 @@ In real hives, drones carry genetic material between colonies — their only pur
 - [ ] **Fungal diversity** — currently the Mycelium is the only fungal organism. Additional types would need to earn their place through a specific functional need not covered by existing mechanisms. Not pre-populated — added when a real gap triggers it.
 
 ### Biological Model Extensions (Parked — validated as correct mappings, not yet functional)
-- [ ] **Drone caste naming mismatch** — HIVE-MIND drones do compute-without-judgment. Biological drones carry genetic material between colonies (mating flights). The biological drone role maps to cross-colony pattern propagation (v5.0.0 drone protocol). The naming mismatch is acknowledged but not worth a rename — it would break existing documentation for a taxonomy correction that doesn't change behavior.
-- [ ] **Mites (context rot detector)** — passive scan for trusted patterns that haven't been validated in N versions. Folded into Pruning ritual (v3.3.0) as "bee bread spoilage detection." May resurface as its own organism if the Pruning ritual proves insufficient.
-- [ ] **Queen competition / regicide** — in biology, the first queen to emerge kills rival queens in their cells. In the colony, the Scout's hypothesis protocol selects one approach and kills alternatives. The "dead" alternatives persist in the Mycelium as branches not taken. No new mechanism needed — validates existing design.
 - [ ] **Propolis as always-on boundary coating** — the colony tongue's instruction/data separation, security guardrails, and privilege model are propolis. They're applied to the hive structure once and persist. Currently implemented as rituals (invoked per-request) but conceptually they're coatings (always present). If the colony ever needs to distinguish between "check this boundary now" vs. "this boundary is always sealed," propolis is the model.
 - [ ] **Spermatheca / genetic storage** — the queen stores genetic material from multiple mating flights and selectively fertilizes eggs. In the colony, this maps to the mother queen storing patterns from multiple daughter hives and selectively passing them to new daughters during spawning. Currently all colony-public memory is passed uniformly. Selective inheritance based on domain relevance would be the spermatheca mechanism. Relevant at 5+ daughters with diverse domains.
 
@@ -503,6 +631,21 @@ In real hives, drones carry genetic material between colonies — their only pur
 - [x] v3.2.0 coverage: 30 tests, 26 pass, 80% avg (Sonnet 4, LLM grading)
 - [x] v3.2.0 adaptive: 20 tests, 20 pass, 89% avg
 - [x] v3.2.0 saturation: 50 tests, 46 pass, zero new failure modes
+- [x] Queen competition / regicide validated — hypothesis protocol already implements this (Scout selects, dead alternatives persist in Mycelium). No new mechanism needed.
+- [x] Drone caste naming mismatch resolved — acknowledged, no rename. Biological drone role maps to cross-colony pattern propagation (v5.0.0). Naming doesn't change behavior.
+- [x] Mites subsumed into Pruning ritual (v3.3.0) — bee bread spoilage detection covers the context rot scan
+- [x] ecosystem/mycelium.md shipped with 7 seeded decisions + bidirectional wiring (Evolution, Scout, Spawning)
+- [x] ecosystem/README.md with organism classes, biological grounding table, organism template
+- [x] Test harness: adaptive throttling, pipelined execution, tier-scaled max_tokens, BENEATH grader calibration, truncation warnings
+- [x] CF blob rebuilt (32 files, 181K chars, ecosystem files included)
+- [x] ROADMAP expanded with v3.3.0–v4.0.0 from research log + swarm protocol (Decision #7)
+- [x] output-forms/skill-blueprint.md — Wax input type + description-first design + portability tiers
+- [x] output-forms/skill-validation-report.md — trigger testing, cross-platform audit, distinct from prompt validation
+- [x] A18: Trigger-First Failure anti-pattern + S1: Description-First Design pattern
+- [x] SC1: SKILL_INJECTION threat class + §7 Skill Security in security.md
+- [x] Forager HyperMode — registry check, doc fetch, trigger phrase synthesis for Wax input
+- [x] Pheromone Protocol — 4 types formalized, wired into Messenger + Scout
+- [x] rituals/pruning.md — bee bread spoilage detection, 5-phase flow, deprecation pipeline
 
 ---
 
